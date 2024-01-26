@@ -1,9 +1,9 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Header from './Header';
-import { TouchableOpacity } from 'react-native-web';
+
 
 export default function ContactScreen() {
   const right = ()=>(

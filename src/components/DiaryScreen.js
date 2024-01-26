@@ -18,9 +18,7 @@ export default function DiaryScreen() {
   return (
     <View style={styles.container}>
         <Header Right={right}/>
-        <Text>
-            DiaryScreen
-        </Text>
+       
     </View>
   );
 }

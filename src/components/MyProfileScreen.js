@@ -15,7 +15,6 @@ export default function MyProfileScreen() {
   return (
     <View style={styles.container}>
        <Header Right={right}/>
-       
         <Text>
             My Profile Screen
         </Text>
