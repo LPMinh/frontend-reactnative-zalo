@@ -42,7 +42,8 @@ export default function ChatScreen({navigation}) {
       {
         id:1,
         name:'Nguyen Van A',
-        avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq8e0Ojr4mmgcCngpEdzD9cLKBv6ookE9eXA&usqp=CAU"
+        avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq8e0Ojr4mmgcCngpEdzD9cLKBv6ookE9eXA&usqp=CAU",
+        status:'Vừa truy cập'
       },
       lastMessage:{
         type:'image',
@@ -58,7 +59,8 @@ export default function ChatScreen({navigation}) {
       {
         id:2,
         name:'Nguyen Van B',
-        avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq8e0Ojr4mmgcCngpEdzD9cLKBv6ookE9eXA&usqp=CAU"
+        avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq8e0Ojr4mmgcCngpEdzD9cLKBv6ookE9eXA&usqp=CAU",
+        status:'Vừa truy cập'
       },
       lastMessage:{
         type:'text',
@@ -75,7 +77,8 @@ export default function ChatScreen({navigation}) {
       {
         id:3,
         name:'Nguyen Van C',
-        avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq8e0Ojr4mmgcCngpEdzD9cLKBv6ookE9eXA&usqp=CAU"
+        avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq8e0Ojr4mmgcCngpEdzD9cLKBv6ookE9eXA&usqp=CAU",
+        status:'Truy cập 10 phút trước'
       },
       lastMessage:{
         type:'audio',
@@ -91,7 +94,8 @@ export default function ChatScreen({navigation}) {
       {
         id:4,
         name:'Nguyen Van D',
-        avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq8e0Ojr4mmgcCngpEdzD9cLKBv6ookE9eXA&usqp=CAU"
+        avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq8e0Ojr4mmgcCngpEdzD9cLKBv6ookE9eXA&usqp=CAU",
+        status:'Truy cập 10 phút trước'
       },
       lastMessage:{
         type:'sticker',

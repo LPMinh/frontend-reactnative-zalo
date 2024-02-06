@@ -44,12 +44,14 @@ export default function FooterBoxChat({onShowBoxSticker}) {
 
 const styles = StyleSheet.create({
   container: {
+    
     display:'flex',
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     width:'100%',
-    height:'10%'
+    height:'10%',
+    bottom:0,
   },
   wrap:{
     width:'100%',

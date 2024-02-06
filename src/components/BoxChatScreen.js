@@ -22,71 +22,78 @@ export default function BoxChatScreen({navigation,route}) {
       id:1,
       content:{
         type:'text',
-        content:'Hello'
+        content:'Hello',
+        time:'10:00'
       },
       sender:user,
       receciver:receciver,
-      time:'10:00'
+      
     },
     {
       id:2,
       content:{
         type:'image',
-        content:'https://cdn.pixabay.com/photo/2015/04/19/08/32/marguerite-729510_640.jpg'
+        content:'https://cdn.pixabay.com/photo/2015/04/19/08/32/marguerite-729510_640.jpg',
+        time:'10:00'
       },
       sender:receciver,
       receciver:user,
-      time:'10:00'
+     
     },
     {
       id:3,
       content:{
         type:'text',
-        content:'Nic to meet you'
+        content:'Nic to meet you',
+        time:'10:00'
       },
       sender:user,
       receciver:receciver,
-      time:'10:00'
+      
     },
     {
       id:4,
       content:{
         type:'text',
-        content:'Nice to meet you too'
+        content:'Nice to meet you too',
+        time:'10:00'
       },
       sender:receciver,
       receciver:user,
-      time:'10:00'
+      
     },
     {
       id:5,
       content:{
         type:'text',
-        content:'How are you?'
+        content:'How are you?',
+        time:'10:00'
       },
       sender:user,
       receciver:receciver,
-      time:'10:00'
+     
     },
     {
       id:6,
       content:{
         type:'text',
-        content:'I am fine'
+        content:'I am fine',
+        time:'10:00'
       },
       sender:receciver,
       receciver:user,
-      time:'10:00'
     },
     {
       id:7,
       content:{
         type:'text',
-        content:'Goodbye'
+        content:'Goodbye',
+        time:'10:00'
+
       },
       sender:user,
       receciver:receciver,
-      time:'10:00'
+      
     },
     {
       id:8,
@@ -98,14 +105,12 @@ export default function BoxChatScreen({navigation,route}) {
       receciver:user,
       time:'10:00'
     }
-
-   
   ]
 
   return (
     <View style={styles.ChatScreen}>
         <HeaderChatScreen receciver={receciver} navigation={navigation} />
-        <ScrollView style={{width:'100%'}}>  
+        <ScrollView style={{width:'100%',height:'600px',direction:'inherit',backgroundColor:'#E2E9F1'}}>  
               {
                 listMessage.map((item,index)=>{
                   return <Message key={index} item={item.content}  sender={item.sender}  receiver={item.receciver} user={user} />

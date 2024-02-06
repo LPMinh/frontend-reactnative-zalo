@@ -10,6 +10,9 @@ import BoxChatScreen from './src/components/BoxChatScreen';
 import ChatScreen from './src/components/ChatScreen';
 import { Provider } from 'react-redux';
 import store from './src/redux/store/store';
+import WelcomeScreen from './src/components/WelcomeScreen';
+import LoginScreen from './src/components/LoginScreen';
+
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -17,9 +20,11 @@ export default function App() {
     <Provider store={store}>
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown:false}}>
+        <Stack.Screen name="welcome" component={WelcomeScreen}/>
+        <Stack.Screen name="login" component={LoginScreen}/>
         <Stack.Screen name="tab" component={BottomTab} />
         <Stack.Screen name="chat" component={ChatScreen} />
-        <Stack.Screen name="chatbox" component={BoxChatScreen} />
+        <Stack.Screen name="chatbox" component={BoxChatScreen}/>
       </Stack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>

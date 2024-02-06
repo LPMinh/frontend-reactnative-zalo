@@ -83,8 +83,7 @@ export default function BoxSticker() {
 
   return (
     <View style={styles.boxsticker}>
-      <View style={{flexDirection:'row',alignItems:'flex-start',justifyContent:'flex-start',width:'100%'}}>
-             
+      <View style={{flexDirection:'row',alignItems:'flex-start',justifyContent:'flex-start',width:'100%'}}>           
          {          
             dataTickers.map((item,index)=>{
               return(
@@ -96,15 +95,8 @@ export default function BoxSticker() {
          }
         </View> 
         {
-          selectedListTicker!==0?<BoxTypeTicker item={handleFindListTickerSelected(selectedListTicker)}/>:<EmojiPicker></EmojiPicker>
+          selectedListTicker!==0?<BoxTypeTicker item={handleFindListTickerSelected(selectedListTicker)}/>:<EmojiPicker style={{display:'flex',alignSelf:'flex-start'}} autoFocusSearch={true} ></EmojiPicker>
         }
-       
-   
-     
-     
-    
-
-
     </View>
   );
 }
