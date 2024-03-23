@@ -2,11 +2,14 @@ import { faEllipsis, faImage, faMagnifyingGlass, faMicrophone, faNoteSticky } fr
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import EmojiPicker from 'emoji-picker-react';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView, FlatList, Image, SectionList } from 'react-native';
 import BoxTypeTicker from './BoxTypeTicker';
+import EmojiPickerr from './EmojiPicker';
+import EmojiPicker from './EmojiPicker';
+import { setEmoji } from '../redux/slice/slice';
+import { useDispatch } from 'react-redux';
 
 
 
@@ -16,6 +19,10 @@ export default function BoxSticker() {
     const listFind= dataTickers.find(item=>item.id===id);
     console.log(listFind);
     return listFind;
+ }
+ const dispatch = useDispatch();
+ const handleEmojiSelected=(emoji)=>{
+  dispatch(setEmoji(emoji));
  }
  const dataTickers=[
    {
@@ -83,7 +90,7 @@ export default function BoxSticker() {
 
   return (
     <View style={styles.boxsticker}>
-      <View style={{flexDirection:'row',alignItems:'flex-start',justifyContent:'flex-start',width:'100%'}}>
+       <View style={{flexDirection:'row',alignItems:'flex-start',justifyContent:'flex-start',width:'100%'}}>
              
          {          
             dataTickers.map((item,index)=>{
@@ -95,29 +102,22 @@ export default function BoxSticker() {
             })
          }
         </View> 
-        {
-          selectedListTicker!==0?<BoxTypeTicker item={handleFindListTickerSelected(selectedListTicker)}/>:<EmojiPicker></EmojiPicker>
-        }
-       
-   
-     
-     
-    
-
-
+          {
+            selectedListTicker!==0?<BoxTypeTicker item={handleFindListTickerSelected(selectedListTicker)}/>:<EmojiPicker onEmojiSelected={handleEmojiSelected} />
+          }
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   boxsticker: {
-    display:'flex',
+    flex:1,
     flexDirection:'column',
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     width:'100%',
-    height:'40%'
+    height:'auto',
   },
 
 

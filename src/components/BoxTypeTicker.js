@@ -14,7 +14,7 @@ import { useState } from 'react';
 
 export default function BoxTypeTicker({item}) {
   return (
-          <View style={{width:'100%',height:'100%',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
+          <View style={{width:'100%',height:'50%',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
             <Text style={{width:'100%'}}>{item.name}</Text>
             <FlatList
             data={item.data}
@@ -40,10 +40,10 @@ export default function BoxTypeTicker({item}) {
 const styles = StyleSheet.create({
   ChatScreen: {
     backgroundColor: '#fff',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
+    alignItems: 'center',
+    justifyContent: 'center',
     width:'100%',
-    height:'100%',
+    height:'auto'
    
   }
 });

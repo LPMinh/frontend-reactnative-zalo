@@ -10,7 +10,7 @@ import FooterBoxChat from './FooterBoxChat';
 import Message from './Message';
 import BoxSticker from './BoxSticker';
 import { useState } from 'react';
-
+import EmojiPicker from 'emoji-picker-react';
 
 export default function BoxChatScreen({navigation,route}) {
   const receciver=route.params.receciver;
@@ -113,9 +113,9 @@ export default function BoxChatScreen({navigation,route}) {
               }
         </ScrollView>
         <FooterBoxChat onShowBoxSticker={setShowBoxSticker}/>
-        {
+        {/* {
           showBoxSticker?<BoxSticker/>:null
-        }
+        } */}
         
         
     </View>
@@ -124,11 +124,12 @@ export default function BoxChatScreen({navigation,route}) {
 
 const styles = StyleSheet.create({
   ChatScreen: {
+    flex:1,
     backgroundColor: '#fff',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     width:'100%',
-    height:'100%',
+   height:'auto'
    
   }
 });
