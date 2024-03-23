@@ -7,7 +7,7 @@ import { Image, StyleSheet, Text, View ,TouchableOpacity} from 'react-native';
 
 
 export default function HeaderChatScreen({receciver,navigation}) {
-  
+  console.log(receciver);
 
   return (
     <View style={styles.container}>
@@ -16,9 +16,9 @@ export default function HeaderChatScreen({receciver,navigation}) {
                         <TouchableOpacity onPress={()=>{navigation.goBack()}}>
                             <Image source={require('../images/icon/left-arrow.png')} style={{width:30,height:30}}></Image>
                         </TouchableOpacity>
-                        <View style={{flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
+                        <View style={{flexDirection:'column',alignItems:'flex-start',justifyContent:'center'}}>
                             <Text style={{fontWeight:'bold',color:'white'}}>{receciver.name}</Text>
-                            <Text>{receciver.status}</Text>
+                            <Text style={{fontWeight:'100',color:'white'}}>{receciver.status}</Text>
                         </View>
                        
                 </View>
@@ -40,7 +40,7 @@ export default function HeaderChatScreen({receciver,navigation}) {
 
 const styles = StyleSheet.create({
   container: {
-    display:'flex',
+    display:'absolute',
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',

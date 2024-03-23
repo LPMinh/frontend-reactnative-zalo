@@ -7,6 +7,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 
 export default function ItemMessage({item,navigation}) {
+  console.log(item);
  
   const covertContentMessageByType = (type,content)=>{
       switch(type){
