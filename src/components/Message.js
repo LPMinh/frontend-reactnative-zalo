@@ -41,7 +41,7 @@ export default function Message({item,receiver,user,sender}) {
                           <Text style={{fontSize:10,marginTop:'5px'}}>{item.time}</Text>
                           
                       </View>
-                      <EmotionDropBox display={falsez}></EmotionDropBox>
+                      <EmotionDropBox display={false}></EmotionDropBox>
                   </View>
         case 'image':
           return <Image source={content} style={{width:200,height:300,resizeMode:'cover',marginLeft:'10px'}}></Image>;

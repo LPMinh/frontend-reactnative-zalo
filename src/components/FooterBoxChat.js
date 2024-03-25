@@ -27,7 +27,10 @@ export default function FooterBoxChat({onShowBoxSticker}) {
     setContextChat(contextChat+emoji);
     dispatch(setEmoji(''));
   }
-  
+  const handleSendMess=()=>{
+    
+
+  }
   
   return (
     <View style={styles.container}>
@@ -60,24 +63,14 @@ export default function FooterBoxChat({onShowBoxSticker}) {
 
 const styles = StyleSheet.create({
   container: {
-<<<<<<< HEAD
     display:'flex', 
     position:'absolute',
     bottom:0,
-=======
-    
-    display:'flex',
->>>>>>> e5662ad4b8eea452a2fb5b3f0528ff5c820d50bd
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     width:'100%',
-<<<<<<< HEAD
     height:'auto'
-=======
-    height:'10%',
-    bottom:0,
->>>>>>> e5662ad4b8eea452a2fb5b3f0528ff5c820d50bd
   },
 
 });
