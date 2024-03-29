@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Header from './Header';
 
-export default function MyProfileScreen() {
+export default function MyProfileScreen({ navigation }) {
   const right = () => (
     <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
       <TouchableOpacity>
@@ -88,7 +88,7 @@ export default function MyProfileScreen() {
 
 
       {/* Tìa khoản và bảo mật*/}
-      <TouchableOpacity style={{ top: 10, left: 10, flexDirection: "row", alignItems: "center", height: 50, width: "100%" }}>
+      <TouchableOpacity onPress={() => navigation.navigate('AccountAndSecurity')} style={{ top: 10, left: 10, flexDirection: "row", alignItems: "center", height: 50, width: "100%" }}>
         <Image source={require("../images/icon/account_and_security .jpg")} style={{ width: 25, height: 30, marginRight: 15 }}></Image>
         <Text style={{ left: 10, fontSize: 17, marginRight: 140 }}>Tài khoản và bảo mật</Text>
         <Image source={require("../images/icon/icon_comes.jpg")} style={{ width: 15, height: 15, position: "absolute", right: 25 }}></Image>
