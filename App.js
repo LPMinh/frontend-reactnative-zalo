@@ -12,22 +12,27 @@ import { Provider } from 'react-redux';
 import store from './src/redux/store/store';
 import WelcomeScreen from './src/components/WelcomeScreen';
 import LoginScreen from './src/components/LoginScreen';
+import AccountAndSecurity from './src/components/AccountAndSecurity';
+import UpdatePassword from './src/components/UpdatePassword';
 
 
 export default function App() {
   const Stack = createStackNavigator();
   return (
     <Provider store={store}>
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown:false}}>
-        <Stack.Screen name="welcome" component={WelcomeScreen}/>
-        <Stack.Screen name="login" component={LoginScreen}/>
-        <Stack.Screen name="tab" component={BottomTab} />
-        <Stack.Screen name="chat" component={ChatScreen} />
-        <Stack.Screen name="chatbox" component={BoxChatScreen}/>
-      </Stack.Navigator>
-      <StatusBar style="auto" />
-    </NavigationContainer>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+
+          <Stack.Screen name="welcome" component={WelcomeScreen} />
+          <Stack.Screen name="login" component={LoginScreen} />
+          <Stack.Screen name="tab" component={BottomTab} />
+          <Stack.Screen name="chat" component={ChatScreen} />
+          <Stack.Screen name="chatbox" component={BoxChatScreen} />
+          <Stack.Screen name="AccountAndSecurity" component={AccountAndSecurity} />
+          <Stack.Screen name="UpdatePassword" component={UpdatePassword} />
+        </Stack.Navigator>
+        <StatusBar style="auto" />
+      </NavigationContainer>
     </Provider>
   );
 }
