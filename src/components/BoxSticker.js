@@ -8,8 +8,8 @@ import { StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView, FlatLi
 import BoxTypeTicker from './BoxTypeTicker';
 import EmojiPickerr from './EmojiPicker';
 import EmojiPicker from './EmojiPicker';
-import { setEmoji } from '../redux/slice/slice';
 import { useDispatch } from 'react-redux';
+import { setEmoji } from '../redux/slice/chatReducer';
 
 
 

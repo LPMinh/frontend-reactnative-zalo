@@ -3,9 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { StyleSheet, Text, View,Image, TouchableOpacity, TextInput } from 'react-native';
+axios.defaults.baseURL = 'http://localhost:8080/api/v1';
 
 
 const saveJWT = async (jwtToken) => {
@@ -52,22 +54,18 @@ export default function LoginScreen({navigation}) {
   const [password, setPassword] = useState('');
   const userAgent = "mobile"
  
-  const login = async  () => {
-    try{
-      const respone = await fetch('http://localhost:8080/api/v1/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'User-Agent': 'mobile',
-        },
-        body: JSON.stringify({
-          phoneNumber: phoneNumber.trim(),
-          password: password.trim(),
-        }),
-    
+  const login = async (phoneNumber, password) => {
+    try {
+      const response = await axios.post('/auth/login', {
+        phoneNumber,
+        password,
+        userAgent
       });
-    }catch(e){
-      console.error('Lỗi khi đăng nhập:', e);
+      console.log(response.data);
+      await saveJWT(response.data.accessToken);
+      navigation.navigate('Home');
+    } catch (error) {
+      console.error('Lỗi khi đăng nhập:', error);
     }
   }
   return (
@@ -88,7 +86,7 @@ export default function LoginScreen({navigation}) {
                 </View>
 
                 <TouchableOpacity><Text style={{color:'#0895FB'}}>Lấy lại mật khẩu</Text></TouchableOpacity>
-                <TouchableOpacity style={{width:'50%',alignSelf:'center',marginTop:'20px'}}  onPress={()=>navigation.navigate('tab')}>
+                <TouchableOpacity style={{width:'50%',alignSelf:'center',marginTop:'20px'}}  onPress={()=>{login(phoneNumber,password)}}>
                     <Text style={{backgroundColor:'#0895FB',color:'white',textAlign:'center',width:'100%',height:'40px',lineHeight:'40px',borderRadius:'5px'}}>Đăng nhập</Text>
                 </TouchableOpacity>
             </View>

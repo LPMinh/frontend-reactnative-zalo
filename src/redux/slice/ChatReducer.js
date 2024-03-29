@@ -47,5 +47,5 @@ const appChatSlice= createSlice(
 export const { setChat, setUser,setEmoji,resetFocusMessage ,setFocusMessage} = appChatSlice.actions
 
 
-const appReducer = appChatSlice.reducer;
-export default appReducer;
+const ChatReducer = appChatSlice.reducer;
+export default ChatReducer;

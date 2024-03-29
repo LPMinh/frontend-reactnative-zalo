@@ -8,7 +8,7 @@ import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-nativ
 import BoxSticker from './BoxSticker';
 import BoxTypeTicker from './BoxTypeTicker';
 import { useDispatch, useSelector } from 'react-redux';
-import { setEmoji } from '../redux/slice/slice';
+import { setEmoji } from '../redux/slice/chatReducer';
 
 
 export default function FooterBoxChat({onShowBoxSticker}) {
