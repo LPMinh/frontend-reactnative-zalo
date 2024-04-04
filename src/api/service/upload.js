@@ -31,13 +31,10 @@ import requestApi from "../request/request";
 const updateload = async (uri) => {
     let formData = new FormData();
     let localUri = uri;
-    console.log(localUri);
     let filename = localUri.split('/').pop();
     // Infer the type of the image
     let match = /\.(\w+)$/.exec(filename);
     let type = match ? `image/${match[1]}` : `image`;
-    console.log(type);
-    console.log(filename);
     formData.append('multipartFile', { uri: localUri, name: filename, type });
     const name = await requestApi('/uploads/upload', 'POST', formData, null,'multipart/form-data')
     .then((response) => {

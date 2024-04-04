@@ -23,8 +23,8 @@ export default function ItemMessage({item,navigation}) {
   return (
     <TouchableOpacity style={styles.container} onPress={()=>navigation.navigate('chatbox',{receciver:item.user})}>
         <View style={[styles.wrap,{ backgroundColor: item.type==='cloud'?'#F9F9F9':'#fff',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}]}>
-                <Image style={{height:50,width:50,borderRadius:50}} source={{uri:item.user.avatar}}>
-                </Image>
+                <Image style={{height:50,width:50,borderRadius:50}} source={{uri:item?.user?.avatar}}/>
+                
                 <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
                     <View style={{width:'80%',height:'100%',justifyContent:'flex-start',alignItems:'flex-start',marginLeft:10}}>
                         <Text style={{fontWeight:item.isSeen===true?'normal':'bold',fontSize:18}}>{item.user.name}</Text>

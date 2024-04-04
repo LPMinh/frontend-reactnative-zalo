@@ -25,7 +25,7 @@ export default function ChatScreen({ navigation }) {
     id: 1,
     user: {
       name: 'Cloud của tôi',
-      avatar: require('../images/icon/cloud.png'),
+      avatar: 'https://cdn-icons-png.flaticon.com/256/2525/2525758.png',
     },
     lastMessage: {
       type: 'text',

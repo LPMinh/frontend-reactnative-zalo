@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Header from './Header';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -22,9 +22,10 @@ export default function MyProfileScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Header Right={right} />
-
+      <ScrollView style={{width:'100%'}}>
       <TouchableOpacity style={{ top: 10, left: 10, flexDirection: "row", alignItems: "center", width: 300 }}>
-        <Image source={require("../images/icon/icon_my_profile.jpg")} style={{ width: 60, height: 60, marginRight: 15 }}></Image>
+        {/* <Image source={require("../images/icon/icon_my_profile.jpg")} style={{ width: 60, height: 60, marginRight: 15 }}></Image> */}
+        {user?.avatar ? <Image source={{ uri: user?.avatar }} style={{ width: 60, height: 60, marginRight: 15 ,borderRadius:50}}></Image> : <Image source={require("../images/icon/icon_my_profile.jpg")} style={{ width: 60, height: 60, marginRight: 15 }}></Image>}
         <View>
           <Text style={{ fontSize: 17, marginRight: 100 }}>{user?.name}</Text>
           <Text style={{ color: "gray" }}>Xem trang cá nhân</Text>
@@ -112,7 +113,7 @@ export default function MyProfileScreen({ navigation }) {
         <Image source={require("../images/icon/icon_comes.jpg")} style={{ width: 15, height: 15, position: "absolute", right: 25 }}></Image>
       </TouchableOpacity>
 
-
+      </ScrollView>
 
 
 

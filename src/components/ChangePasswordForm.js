@@ -1,47 +1,42 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
+import { faLock } from '@fortawesome/free-solid-svg-icons';
+import { changePassword } from '../api/service/passowrd';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-import login from '../api/service/login';
-import findUserByEmail from '../api/service/user';
 
-axios.defaults.baseURL = 'http://localhost:8080/api/v1';
-
-const LoginScreen = ({ navigation, route }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const ChangePasswordScreen = ({ navigation }) => {
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-  const account = route?.params?.account;
-
-  if (account) {
-    setEmail(account.email);
-    setPassword(account.password);
-  }
-
-  const handleLogin = async () => {
-    const info = {
-      email: email,
-      password: password,
-      isMobile: true,
-    };
-
-    const response = await login(info);
-
-    if (response) {
-      const user = await findUserByEmail(email)
-        .then((response) => response)
-        .catch((error) => {
-          console.log(error);
-          return null;
-        });
-      console.log(user);
-      AsyncStorage.setItem('user', JSON.stringify(user));
-      navigation.navigate('tab');
-    } else {
-      setError('Sai tài khoản hoặc mật khẩu');
+  const [usser, setUser] = useState({});
+  AsyncStorage.getItem('user').then((user) => {
+    setUser(JSON.parse(user));
+  });
+  const handleChangePassword = async () => {
+    // Add your logic to handle changing password
+    if (newPassword !== confirmPassword) {
+      setError('Mật khẩu mới không khớp');
+      return;
     }
+
+    // Clear error message if passwords match
+    setError('');
+
+    const email = user.email;
+  
+    // Add your API call or logic to change password here
+    const result = await changePassword (email,currentPassword,newPassword,confirmPassword);
+    console.log(result);
+    if(result){
+      alert('Đổi mật khẩu thành công');
+      navigation.navigate('welcome');
+    }
+    else{
+      setError('Mật khẩu hiện tại không đúng');
+    }
+    
   };
 
   return (
@@ -50,18 +45,18 @@ const LoginScreen = ({ navigation, route }) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image source={require('../images/icon/left-arrow.png')} style={styles.backIcon} />
         </TouchableOpacity>
-        <Text style={styles.title}>Đăng nhập</Text>
+        <Text style={styles.title}>Đổi mật khẩu</Text>
       </View>
       <View style={styles.content}>
-        <Text style={styles.subtitle}>Vui lòng nhập email và mật khẩu để đăng nhập</Text>
         <View style={styles.inputContainer}>
-          <FontAwesomeIcon icon={faEnvelope} style={styles.icon} />
+          <FontAwesomeIcon icon={faLock} style={styles.icon} />
           <TextInput
             style={styles.input}
-            placeholder="Email"
+            placeholder="Mật khẩu hiện tại"
             placeholderTextColor="#aaa"
-            onChangeText={setEmail}
-            value={email}
+            secureTextEntry={true}
+            onChangeText={setCurrentPassword}
+            value={currentPassword}
           />
         </View>
 
@@ -69,22 +64,30 @@ const LoginScreen = ({ navigation, route }) => {
           <FontAwesomeIcon icon={faLock} style={styles.icon} />
           <TextInput
             style={styles.input}
-            placeholder="Mật khẩu"
+            placeholder="Mật khẩu mới"
             placeholderTextColor="#aaa"
             secureTextEntry={true}
-            onChangeText={setPassword}
-            value={password}
+            onChangeText={setNewPassword}
+            value={newPassword}
           />
         </View>
 
-        <TouchableOpacity onPress={() => navigation.navigate('resetpassword1')}>
-          <Text style={styles.forgotPasswordText}>Quên mật khẩu?</Text>
-        </TouchableOpacity>
-        
+        <View style={styles.inputContainer}>
+          <FontAwesomeIcon icon={faLock} style={styles.icon} />
+          <TextInput
+            style={styles.input}
+            placeholder="Xác nhận mật khẩu mới"
+            placeholderTextColor="#aaa"
+            secureTextEntry={true}
+            onChangeText={setConfirmPassword}
+            value={confirmPassword}
+          />
+        </View>
+
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Đăng nhập</Text>
+        <TouchableOpacity style={styles.button} onPress={handleChangePassword}>
+          <Text style={styles.buttonText}>Đổi mật khẩu</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -124,10 +127,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  subtitle: {
-    textAlign: 'left',
-    marginBottom: 20,
-  },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -146,10 +145,6 @@ const styles = StyleSheet.create({
     height: 40,
     fontSize: 16,
     paddingVertical: 0,
-  },
-  forgotPasswordText: {
-    color: '#0895FB',
-    marginBottom: 20,
   },
   errorText: {
     color: 'red',
@@ -170,4 +165,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default ChangePasswordScreen;

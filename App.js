@@ -20,6 +20,9 @@ import FormRegister from './src/components/FormRegisterScreen';
 import ResetPasswordForm from './src/components/ResetPasswordEmail';
 import OTPVerifyResetPassword from './src/components/OTPVerifyResetPassword';
 import NewPasswordForm from './src/components/NewPassowordForm';
+import ChangePasswordScreen from './src/components/ChangePasswordForm';
+import ProfileDisplay from './src/components/DetailMyProfile';
+import UpdateInfomation from './src/components/UpdateInfomation';
 
 
 export default function App() {
@@ -42,6 +45,9 @@ export default function App() {
           <Stack.Screen name="chatbox" component={BoxChatScreen} />
           <Stack.Screen name="AccountAndSecurity" component={AccountAndSecurity} />
           <Stack.Screen name="UpdatePassword" component={UpdatePassword} /> 
+          <Stack.Screen name="changepassword" component={ChangePasswordScreen} />
+          <Stack.Screen name="detailmyprofile" component={ProfileDisplay} />
+          <Stack.Screen name="updateinfo" component={UpdateInfomation}/>
         </Stack.Navigator>
         <StatusBar style="auto" />
       </NavigationContainer>

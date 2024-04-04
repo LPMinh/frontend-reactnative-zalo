@@ -14,12 +14,13 @@ export default function AccountAndSecurity({ navigation }) {
             <Image style={{ width: 22, height: 18, left: 10 }} source={require('../images/icon/back.jpg')}></Image>
             <Text style={{ position: 'absolute', left: 50, color: 'white', fontWeight: '500', fontSize: 19 }}>Tài khoản và bảo mật</Text>
         </TouchableOpacity>
-
+        <ScrollView style={{width:'100%'}}>
         <Text style={{ top: 10, color: '#2455a1', fontSize: 17, fontWeight: '600' }}> Tài khoản</Text>
 
         {/* button thong tin ca nnhan */}
-        <TouchableOpacity style={{ flexDirection: 'row', borderWidth: 1, borderColor: 'gray', width: '90%', height: 100, alignSelf: 'center', borderRadius: 10, top: 25, alignItems: 'center' }}>
-            <Image style={{ resizeMode: 'center', width: 70, height: 60, left: 10 }} source={require('../images/icon/avatar.jpg')}></Image>
+        <TouchableOpacity style={{ flexDirection: 'row', borderWidth: 1, borderColor: 'gray', width: '90%', height: 100, alignSelf: 'center', borderRadius: 10, top: 25, alignItems: 'center' }} onPress={()=>navigation.navigate('detailmyprofile')} >
+            {/* <Image style={{ resizeMode: 'center', width: 70, height: 60, left: 10 }} source={require('../images/icon/avatar.jpg')}></Image> */}
+            {user?.avatar ? <Image style={{ resizeMode: 'center', width: 70, height: 60, left: 10 }} source={{ uri: user?.avatar }}></Image> : <Image style={{ resizeMode: 'center', width: 70, height: 60, left: 10 }} source={require('../images/icon/avatar.jpg')}></Image>}
             <View style={{ left: 10, top: -10 }}>
                 <Text style={{ top: 10, color: 'gray', fontSize: 17, fontWeight: '400' }}> Thông tin cá nhân</Text>
                 <Text style={{ top: 10, color: 'black', fontSize: 17, fontWeight: '600' }}>{user?.name}</Text>
@@ -149,6 +150,7 @@ export default function AccountAndSecurity({ navigation }) {
         <TextInput style={{ fontSize: 18, alignSelf: 'center', width: '95%', height: 35, borderBottomColor: '#d6d7d9', borderBottomWidth: 2 }} placeholder='Nhập lại mật khẩu mới' placeholderTextColor={'gray'} ></TextInput>
 
         <TouchableOpacity style={{ justifyContent: 'center', top: 30, alignSelf: 'center', width: 200, height: 40, backgroundColor: '#0099f9', alignItems: 'center', borderRadius: 20 }}><Text style={{ fontSize: 20, color: 'white', fontWeight: '400' }}>CẬP NHẬP</Text></TouchableOpacity> */}
+    </ScrollView>
     </View >
 }
 const styles = StyleSheet.create({

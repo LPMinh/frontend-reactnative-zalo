@@ -68,5 +68,26 @@ const resetPassword = async (email, otp,newPassword,confirmNewPassword) => {
 
   return response;
 };
+const changePassword = async (email, oldPassword,newPassword,confirmNewPassword) => {
+  const response = await requestApi(
+    "/users/changePassword",
+    "POST",
+    { email: email, oldPassword: oldPassword, newPassword: newPassword, confirmNewPassword: confirmNewPassword },
+    true,
+    "application/json",
+    null
+  )
+    .then((response) => {
+      if (response.status === 200) {
+        return true;
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      return false;
+    });
 
-export { sendOTPResetPassword, verifyOTPResetPassword, resetPassword };
+  return response;
+};
+
+export { sendOTPResetPassword, verifyOTPResetPassword, resetPassword,changePassword};
