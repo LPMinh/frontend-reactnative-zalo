@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-web';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
 
 export default function Header({Right}) {
   return (

@@ -36,7 +36,7 @@ const EmojiPicker = ({ onEmojiSelected }) => {
     setSelectedEmoji(emoji);
     onEmojiSelected(emoji);
   };
-
+  
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.emojiContainer}>

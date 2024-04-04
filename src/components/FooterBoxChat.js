@@ -8,7 +8,7 @@ import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-nativ
 import BoxSticker from './BoxSticker';
 import BoxTypeTicker from './BoxTypeTicker';
 import { useDispatch, useSelector } from 'react-redux';
-import { setEmoji } from '../redux/slice/chatReducer';
+import { setEmoji } from '../reduxtoolkit/slice/ChatReducer';
 
 
 export default function FooterBoxChat({onShowBoxSticker}) {
@@ -34,7 +34,7 @@ export default function FooterBoxChat({onShowBoxSticker}) {
   
   return (
     <View style={styles.container}>
-        <View style={[{ backgroundColor:'#0895FB',flexDirection:'row',height:'80px',width:'100%',justifyContent:'space-between',alignItems:'center'}]}>
+        <View style={[{ backgroundColor:'#0895FB',flexDirection:'row',height:'100%',width:'100%',justifyContent:'space-between',alignItems:'center'}]}>
              
                         <TouchableOpacity onPress={handleShowBoxSticker}>
                         <FontAwesomeIcon icon={faNoteSticky} size={25} color={'white'} style={{marginLeft:10}}></FontAwesomeIcon>
@@ -42,7 +42,7 @@ export default function FooterBoxChat({onShowBoxSticker}) {
                         <TextInput autoFocus={true}  placeholder="Nhập tin nhắn" style={{color:'white',marginLeft:10,fontSize:15}} onChangeText={setContextChat} value={contextChat} ></TextInput>
   
                         {contextChat.length>0?<TouchableOpacity>
-                            <FontAwesomeIcon icon={faPaperPlane} size={25} color={'white'} style={{marginLeft:10}}></FontAwesomeIcon>
+                            <FontAwesomeIcon icon={faPaperPlane} size={'25%'} color={'white'} style={{marginLeft:10}}></FontAwesomeIcon>
                         </TouchableOpacity>:null
                         }
                         <TouchableOpacity>
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width:'100%',
-    height:'auto'
+    height:'10%'
   },
 
 });

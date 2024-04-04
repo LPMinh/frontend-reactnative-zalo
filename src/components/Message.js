@@ -8,26 +8,25 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function Message({item,receiver,user,sender}) {
 
-  console.log(receiver);
-  console.log(user)
+ 
   function EmotionDropBox({display}){
     return <View style={{display:display==true?'flex':'none',flexDirection:'row', width:'100%',height:'100%',backgroundColor:'#FEFEFE',borderRadius:5,marginTop:10}}>
-            <TouchableOpacity style={{height:'20px',width:'20px'}}>
+            <TouchableOpacity style={{height:20,width:20}}>
                 <Text>❤️</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{height:'20px',width:'20px'}}>
+            <TouchableOpacity style={{height:20,width:20}}>
                 <Text>👍</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{height:'20px',width:'20px'}}>
+            <TouchableOpacity style={{height:20,width:20}}>
                 <Text>😄</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{height:'20px',width:'20px'}}>
+            <TouchableOpacity style={{height:20,width:20}}>
                 <Text>😮</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{height:'20px',width:'20px'}}>
+            <TouchableOpacity style={{height:20,width:20}}>
                 <Text>😭</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{height:'20px',width:'20px'}}>
+            <TouchableOpacity style={{height:20,width:20}}>
                 <Text>😡</Text>
             </TouchableOpacity>
            </View>
@@ -38,13 +37,13 @@ export default function Message({item,receiver,user,sender}) {
           return  <View>
                       <View style={{backgroundColor:user.id===sender.id?'#C8EDF6':'#FEFEFE',padding:8,width:'auto',height:'auto',borderRadius:10}}>
                           <Text>{content}</Text>
-                          <Text style={{fontSize:10,marginTop:'5px'}}>{item.time}</Text>
+                          <Text style={{fontSize:10,marginTop:5}}>{item.time}</Text>
                           
                       </View>
                       <EmotionDropBox display={false}></EmotionDropBox>
                   </View>
         case 'image':
-          return <Image source={content} style={{width:200,height:300,resizeMode:'cover',marginLeft:'10px'}}></Image>;
+          return <Image source={{uri:content}} style={{width:100,height:100,borderRadius:10}}></Image>
         case 'sticker':
           return 'Đã gửi 1 nhãn dán';
         default:
@@ -52,9 +51,9 @@ export default function Message({item,receiver,user,sender}) {
       }
   }
   return (
-    <TouchableOpacity style={{marginBottom:'10px',marginLeft:'10px'}}>
+    <TouchableOpacity style={{marginBottom:10,marginLeft:10}}>
         <View style={{flexDirection:'row',alignItems:'center',justifyContent:user.id == receiver.id ? 'flex-start':'flex-end'}}>
-            {user.id == receiver.id ? <Image source={sender.avatar} style={{width:'50px',height:'50px', borderRadius:'50%'}}></Image>:null }{CovertContentMessageByType(item.type,item.content)}
+            {user.id == receiver.id ? <Image source={sender.avatar} style={{width:50,height:50, borderRadius:50}}></Image>:null }{CovertContentMessageByType(item.type,item.content)}
 
         </View>
     </TouchableOpacity>
@@ -68,13 +67,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width:'100%',
+    alignSelf:'flex-start'
    
    
   },
-  wrap:{
-    
-    
-   
-   
-  }
 });

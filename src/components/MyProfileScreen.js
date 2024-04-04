@@ -3,8 +3,15 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Header from './Header';
+import { useDispatch, useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState } from 'react';
 
 export default function MyProfileScreen({ navigation }) {
+  const [user, setUser] = useState({});
+  AsyncStorage.getItem('user').then((user) => {
+    setUser(JSON.parse(user));
+  });
   const right = () => (
     <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
       <TouchableOpacity>
@@ -19,7 +26,7 @@ export default function MyProfileScreen({ navigation }) {
       <TouchableOpacity style={{ top: 10, left: 10, flexDirection: "row", alignItems: "center", width: 300 }}>
         <Image source={require("../images/icon/icon_my_profile.jpg")} style={{ width: 60, height: 60, marginRight: 15 }}></Image>
         <View>
-          <Text style={{ fontSize: 17, marginRight: 100 }}>TranDinhChuong</Text>
+          <Text style={{ fontSize: 17, marginRight: 100 }}>{user?.name}</Text>
           <Text style={{ color: "gray" }}>Xem trang cá nhân</Text>
         </View>
         <TouchableOpacity style={{ margin: 30 }}>

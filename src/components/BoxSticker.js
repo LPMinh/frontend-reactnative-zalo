@@ -1,15 +1,9 @@
-import { faEllipsis, faImage, faMagnifyingGlass, faMicrophone, faNoteSticky } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView, FlatList, Image, SectionList } from 'react-native';
 import BoxTypeTicker from './BoxTypeTicker';
-import EmojiPickerr from './EmojiPicker';
 import EmojiPicker from './EmojiPicker';
 import { useDispatch } from 'react-redux';
-import { setEmoji } from '../redux/slice/chatReducer';
+import { setEmoji } from '../reduxtoolkit/slice/ChatReducer';
 
 
 
@@ -17,7 +11,6 @@ export default function BoxSticker() {
  const [selectedListTicker,setSelectedListTicker]=useState(0);
  const handleFindListTickerSelected=(id)=>{
     const listFind= dataTickers.find(item=>item.id===id);
-    console.log(listFind);
     return listFind;
  }
  const dispatch = useDispatch();
@@ -95,8 +88,8 @@ export default function BoxSticker() {
          {          
             dataTickers.map((item,index)=>{
               return(
-                <TouchableOpacity key={index} style={{ display:'flex',width:'30px',height:'30px',marginRight:'10px',borderWidth:1,borderColor: item.id===selectedListTicker?"red":"white"}} onPress={()=>{setSelectedListTicker(item.id)}}>
-                  <Image source={{uri:item.reviewImg}} style={{width:'30px',height:'30px',resizeMode:'cover',borderRadius:'50%'}}></Image>
+                <TouchableOpacity key={index} style={{ display:'flex',width:30,height:30,marginRight:30,borderWidth:1,borderColor: item.id===selectedListTicker?"red":"white"}} onPress={()=>{setSelectedListTicker(item.id)}}>
+                  <Image source={{uri:item.reviewImg}} style={{width:30,height:30,resizeMode:'cover',borderRadius:50}}></Image>
                 </TouchableOpacity>
               )
             })

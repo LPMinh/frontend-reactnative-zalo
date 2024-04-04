@@ -7,7 +7,6 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 
 export default function ItemMessage({item,navigation}) {
-  console.log(item);
  
   const covertContentMessageByType = (type,content)=>{
       switch(type){
@@ -24,16 +23,16 @@ export default function ItemMessage({item,navigation}) {
   return (
     <TouchableOpacity style={styles.container} onPress={()=>navigation.navigate('chatbox',{receciver:item.user})}>
         <View style={[styles.wrap,{ backgroundColor: item.type==='cloud'?'#F9F9F9':'#fff',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}]}>
-                <Image style={{height:'50px',width:'50px',borderRadius:'50%'}} source={item.user.avatar}>
+                <Image style={{height:50,width:50,borderRadius:50}} source={{uri:item.user.avatar}}>
                 </Image>
                 <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
                     <View style={{width:'80%',height:'100%',justifyContent:'flex-start',alignItems:'flex-start',marginLeft:10}}>
-                        <Text style={{fontWeight:item.isSeen===true?'normal':'bold',fontSize:'18px'}}>{item.user.name}</Text>
+                        <Text style={{fontWeight:item.isSeen===true?'normal':'bold',fontSize:18}}>{item.user.name}</Text>
                         <Text style={{color:item.isSeen===true?"gray":"black",fontWeight:item.isSeen==true?'normal':'bold'}}>{covertContentMessageByType(item.lastMessage.type,item.lastMessage.content)}</Text>
                     </View>
                     <View style={{width:'20%',height:'100%',justifyContent:'center',alignItems:'flex-end'}}>
                         <Text>{item.lastMessageTime}</Text>
-                        <Text style={{backgroundColor:'red',borderRadius:'40%',paddingHorizontal:5,color:'#fff'}}>{item.numberMessage}</Text>
+                        <Text style={{backgroundColor:'red',borderRadius:40,paddingHorizontal:5,color:'#fff'}}>{item.numberMessage}</Text>
                     </View>
                 </View>
                
@@ -54,7 +53,7 @@ const styles = StyleSheet.create({
   },
   wrap:{
     width:'100%',
-    height:'100%',
+    height:100,
     padding:10
    
   }

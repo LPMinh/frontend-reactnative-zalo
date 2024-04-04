@@ -2,7 +2,12 @@
 
 import { Platform, Alert, Button, Image, ScrollView, StyleSheet, Text, View, TouchableOpacity, SectionList, FlatList, TextInput } from 'react-native';
 import React, { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function AccountAndSecurity({ navigation }) {
+    const [user, setUser] = useState({});
+    AsyncStorage.getItem('user').then((user) => {
+        setUser(JSON.parse(user));
+    });
     return <View style={styles.container}>
         {/* Header tài khoản bảo mật */}
         <TouchableOpacity style={{ justifyContent: 'center', width: '100%', height: 60, backgroundColor: '#0085fe' }}>
@@ -17,7 +22,7 @@ export default function AccountAndSecurity({ navigation }) {
             <Image style={{ resizeMode: 'center', width: 70, height: 60, left: 10 }} source={require('../images/icon/avatar.jpg')}></Image>
             <View style={{ left: 10, top: -10 }}>
                 <Text style={{ top: 10, color: 'gray', fontSize: 17, fontWeight: '400' }}> Thông tin cá nhân</Text>
-                <Text style={{ top: 10, color: 'black', fontSize: 17, fontWeight: '600' }}> TranDinhChuong</Text>
+                <Text style={{ top: 10, color: 'black', fontSize: 17, fontWeight: '600' }}>{user?.name}</Text>
             </View>
             <Image style={{ width: 10, height: 15, left: 110 }} source={require('../images/icon/icon_comes.jpg')}></Image>
         </TouchableOpacity>
@@ -26,7 +31,7 @@ export default function AccountAndSecurity({ navigation }) {
             <Image style={{ resizeMode: 'center', width: 30, height: 26, left: 10, margin: 5 }} source={require('../images/icon/phone.jpg')}></Image>
             <View style={{ left: 10, top: -13 }}>
                 <Text style={{ top: 10, fontSize: 18, fontWeight: '450' }}> Số điện thoại</Text>
-                <Text style={{ top: 10, color: 'gray', fontSize: 17, }}> (+84) 918 493 320</Text>
+                <Text style={{ top: 10, color: 'gray', fontSize: 17, }}>{user?.phoneNumber}</Text>
             </View>
             <Image style={{ width: 10, height: 15, left: 190 }} source={require('../images/icon/icon_comes.jpg')}></Image>
         </TouchableOpacity>

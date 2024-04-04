@@ -22,7 +22,7 @@ export default function BoxTypeTicker({item}) {
             keyExtractor={(item,index)=>index.toString()}
             renderItem={({item,index})=>{
               return(
-                <TouchableOpacity style={{flexWrap:'wrap',width:'25%',height:'100px',padding:10}}>
+                <TouchableOpacity style={{flexWrap:'wrap',width:'25%',height:100,padding:10}}>
                   <Image source={{uri:item.url}} style={{width:'100%',height:'100%',resizeMode:'cover'}}></Image>
                 </TouchableOpacity>
               )

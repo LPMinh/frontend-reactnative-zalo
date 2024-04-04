@@ -110,13 +110,21 @@ export default function BoxChatScreen({navigation,route}) {
   return (
     <View style={styles.ChatScreen}>
         <HeaderChatScreen receciver={receciver} navigation={navigation} />
-        <ScrollView style={{width:'100%',height:'600px',direction:'inherit',backgroundColor:'#E2E9F1'}}>  
+        {/* <ScrollView style={{width:'100%',height:600,direction:'inherit',backgroundColor:'#E2E9F1'}}>  
               {
                 listMessage.map((item,index)=>{
                   return <Message key={index} item={item.content}  sender={item.sender}  receiver={item.receciver} user={user} />
                 })
               }
-        </ScrollView>
+        </ScrollView> */}
+        <FlatList
+          data={listMessage}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <Message item={item.content} sender={item.sender} receiver={item.receciver} user={user} />
+          )}
+          style={{ width: '100%' ,width:'100%'}}
+        />
         <FooterBoxChat onShowBoxSticker={setShowBoxSticker}/>
         {/* {
           showBoxSticker?<BoxSticker/>:null
