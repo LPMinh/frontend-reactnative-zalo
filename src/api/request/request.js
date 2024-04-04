@@ -45,7 +45,6 @@ export default async function requestApi(endpoint, method, body, isInterceptors,
                             const tokenRequest = JSON.parse(token);
                             const result = await instance.post(`/auth/refreshToken`, { refreshToken: tokenRequest.refreshToken });
                             const newToken = result.data;
-                            console.log("newToken", newToken);
                             await AsyncStorage.setItem('token', JSON.stringify(newToken));
                             originalConfig.headers['Authorization'] = `Bearer ${newToken.accessToken}`;
                             return instance(originalConfig);

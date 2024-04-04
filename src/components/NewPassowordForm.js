@@ -44,7 +44,7 @@ const validateConfirmPassword = (confirmPassword) => {
 };
 
 useEffect(() => {
-    if(emailError.status && passwordError.status && confirmPasswordError.status){
+    if(passwordError.status && confirmPasswordError.status){
         setDisable(false);
     }
     else{
@@ -58,13 +58,22 @@ useEffect(() => {
     setEmailError('');
     setPasswordError('');
     setConfirmPasswordError('');
-   
-
-    if (!email || !password || !confirmPassword) {
-      Alert.alert('Error', 'Hãy nhập tất cả các thông tin');
+    if (email === '' ){
+      setEmailError('Email không được để trống');
       return;
     }
-
+    if (password === '') {
+      setPasswordError('Mật khẩu không được để trống');
+      return;
+    }
+    if (password.length < 6) {
+      setPasswordError('Mật khẩu phải có ít nhất 6 ký tự');
+      return;
+    }
+    if (confirmPassword === '') {
+      setConfirmPasswordError('Mật khẩu không được để trống');
+      return;
+    }
     if (password !== confirmPassword) {
       setConfirmPasswordError('Mật khẩu không khớp');
       return;

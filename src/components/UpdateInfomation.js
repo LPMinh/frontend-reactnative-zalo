@@ -24,6 +24,7 @@ import updateload from "../api/service/upload";
 import register from "../api/service/register";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import updateuser from "../api/service/updateuser";
+import findUserByEmail from "../api/service/user";
 
 export default function UpdateInfomation({ navigation }) {
   const [isDisable, setIsDisable] = useState(true);
@@ -34,9 +35,16 @@ export default function UpdateInfomation({ navigation }) {
   const [name, setName] = useState("");
   const [validName, setValidName] = useState({ valid: false, message: "" });
   const [user, setUser] = useState({});
-  AsyncStorage.getItem("user").then((user) => {
-    setUser(JSON.parse(user));
-  });
+ 
+  useEffect(() => {
+    // Load user data from AsyncStorage when component mounts
+
+    AsyncStorage.getItem("user").then((userData) => {
+      setUser(JSON.parse(userData));
+    });
+    setName(user?.name);
+    
+  }, []);
   const checkName = (name) => {
     if (name.length == 0) {
       setValidName({ valid: false, message: "bắt buộc nhập tên" });
@@ -66,14 +74,17 @@ export default function UpdateInfomation({ navigation }) {
   };
 
   const onChange = (event, selectedDate) => {
+    console.log("selectedDate", selectedDate);
     const currentDate = selectedDate || date;
+    console.log("currentDate", currentDate);
     setShowPicker(false);
     setDate(currentDate);
   };
 
   const handleChangeInfo = async () => {
-    if (validName.valid) {
-      const fileName = await updateload(image);
+  
+      
+      const fileName = image ? await updateload(image) : user?.avatar;
       const email = user?.email;
       const result = await updateuser(email, date, gender, fileName, name)
         .then((response) => response)
@@ -90,15 +101,12 @@ export default function UpdateInfomation({ navigation }) {
             console.log(error);
             return null;
           });
-        console.log(user);
         AsyncStorage.setItem("user", JSON.stringify(user));
         navigation.navigate("detailmyprofile");
       } else {
         alert("Thanh đổi thất bại");
       }
-    } else {
-      alert("Vui lòng nhập đúng thông tin");
-    }
+   
   };
 
   return (
@@ -140,7 +148,7 @@ export default function UpdateInfomation({ navigation }) {
             />
           ) : (
             <Image
-              source={require("../images/icon/camera.png")}
+              source={{ uri: user?.avatar }}
               style={{
                 width: 100,
                 height: 100,
@@ -192,12 +200,12 @@ export default function UpdateInfomation({ navigation }) {
             </TouchableOpacity>
             {showPicker && (
               <RNDateTimePicker
-                mode="datetime"
-                value={date}
-                display="spinner"
-                onChange={onChange}
-                onTouchCancel={hideDatePicker}
-                onTouchEnd={hideDatePicker}
+                  mode="datetime"
+                  value={date}
+                  display="spinner"
+                  onChange={onChange}
+                  onTouchCancel={hideDatePicker}
+                  onTouchEnd={hideDatePicker}
               />
             )}
             <Text

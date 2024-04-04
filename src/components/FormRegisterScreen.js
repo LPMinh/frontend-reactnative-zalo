@@ -126,14 +126,13 @@ export default function FormRegister({ navigation }) {
   //check emty input
   useEffect(() => {
     if (
-      phone.length === 0 ||
       name.length === 0 ||
       password.length === 0 ||
       rePassword.length === 0 ||
       email.length === 0
     ) {
       setIsDisable(true);
-    } else if ( !validName.valid || !validPhone.valid || !validPassword.valid || !validRePassword.valid || !validEmail.valid) {
+    } else if ( !validName.valid || !validPassword.valid || !validRePassword.valid || !validEmail.valid) {
       setIsDisable(false);
     } else {
       setIsDisable(false);
@@ -142,16 +141,13 @@ export default function FormRegister({ navigation }) {
 
   const handleRegister = async () => {
     checkName(name);
-    checkPhone(phone);
     checkPassword(password);
     checkRepassword(rePassword);
-    console.log(phone);
     if (image == null) {
       image = require("../images/icon/avatar.jpg");
     }
     if (
       validName.valid &&
-      validPhone.valid &&
       validPassword.valid &&
       validRePassword.valid
     ) {
@@ -270,25 +266,6 @@ export default function FormRegister({ navigation }) {
                 )}
               </View>
             </View>
-
-            <View style={styles.inputContainer}>
-              <FontAwesomeIcon
-                icon={faPhone}
-                style={{ color: "#0895FB", fontSize: 20 }}
-              />
-              <View style={styles.input}>
-                <TextInput
-                  placeholder="Nhập số điện thoại"
-                  style={{ width: "100%", height: "100%" }}
-                  onChangeText={setPhone}
-                  value={phone}
-                  onBlur={() => checkPhone(phone)}
-                />
-                {validPhone.message && (
-                  <Text style={styles.error}>{validPhone.message}</Text>
-                )}
-              </View>
-            </View>
             <View style={styles.inputContainer}>
               <FontAwesomeIcon
                 icon={faCalendarDay}
@@ -371,6 +348,7 @@ export default function FormRegister({ navigation }) {
                   onChangeText={setRePassword}
                   value={rePassword}
                   onBlur={() => checkRepassword(rePassword, password)}
+                  
                 />
                 <Text style={styles.error}>{validRePassword.message}</Text>
               </View>
@@ -471,5 +449,6 @@ const styles = StyleSheet.create({
   error: {
     color: "red",
     width: "100%",
+   
   },
 });

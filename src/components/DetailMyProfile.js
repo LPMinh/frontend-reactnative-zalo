@@ -8,12 +8,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const ProfileDisplay = ({ navigation }) => {
   const [user, setUser] = useState({});
 
-  useEffect(() => {
-    // Load user data from AsyncStorage when component mounts
+  
     AsyncStorage.getItem("user").then((userData) => {
       setUser(JSON.parse(userData));
     });
-  }, []);
+
 
   return (
     <View style={styles.container}>

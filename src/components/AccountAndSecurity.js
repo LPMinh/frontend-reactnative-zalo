@@ -8,6 +8,12 @@ export default function AccountAndSecurity({ navigation }) {
     AsyncStorage.getItem('user').then((user) => {
         setUser(JSON.parse(user));
     });
+
+    const handleLogout = () => {
+        AsyncStorage.removeItem('user');
+        AsyncStorage.removeItem('token');
+        navigation.navigate('welcome');
+    }
     return <View style={styles.container}>
         {/* Header tài khoản bảo mật */}
         <TouchableOpacity style={{ justifyContent: 'center', width: '100%', height: 60, backgroundColor: '#0085fe' }}>
@@ -31,8 +37,8 @@ export default function AccountAndSecurity({ navigation }) {
         <TouchableOpacity style={{ flexDirection: 'row', width: '100%', height: 100, alignSelf: 'center', top: 25, alignItems: 'center' }}>
             <Image style={{ resizeMode: 'center', width: 30, height: 26, left: 10, margin: 5 }} source={require('../images/icon/phone.jpg')}></Image>
             <View style={{ left: 10, top: -13 }}>
-                <Text style={{ top: 10, fontSize: 18, fontWeight: '450' }}> Số điện thoại</Text>
-                <Text style={{ top: 10, color: 'gray', fontSize: 17, }}>{user?.phoneNumber}</Text>
+                <Text style={{ top: 10, fontSize: 18, fontWeight: '450' }}>Email</Text>
+                <Text style={{ top: 10, color: 'gray', fontSize: 17, }}>{user?.email}</Text>
             </View>
             <Image style={{ width: 10, height: 15, left: 190 }} source={require('../images/icon/icon_comes.jpg')}></Image>
         </TouchableOpacity>
@@ -113,9 +119,9 @@ export default function AccountAndSecurity({ navigation }) {
 
 
         <View style={{ top: 20, width: "100%", height: 7, backgroundColor: "#d4d4d4", marginBottom: 10 }}></View>
-        <TouchableOpacity style={{ top: 0, flexDirection: 'row', width: '100%', height: 60, alignSelf: 'center', alignItems: 'center' }}>
+        <TouchableOpacity style={{ top: 0, flexDirection: 'row', width: '100%', height: 60, alignSelf: 'center', alignItems: 'center' }} onPress={handleLogout} >
 
-            <Text style={{ left: 15, top: 20, fontSize: 18, fontWeight: '450' }}>Xóa tài khoản</Text>
+            <Text style={{ left: 15, top: 20, fontSize: 18, fontWeight: '450' }}>Đăng Xuất</Text>
 
             <Image style={{ width: 10, height: 15, left: 256, top: 20 }} source={require('../images/icon/icon_comes.jpg')}></Image>
         </TouchableOpacity>
