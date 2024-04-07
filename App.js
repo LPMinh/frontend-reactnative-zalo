@@ -23,6 +23,10 @@ import NewPasswordForm from './src/components/NewPassowordForm';
 import ChangePasswordScreen from './src/components/ChangePasswordForm';
 import ProfileDisplay from './src/components/DetailMyProfile';
 import UpdateInfomation from './src/components/UpdateInfomation';
+import SearchScreen from './src/components/SearchScreen';
+import FriendRequest from './src/components/FriendRequest';
+import MakeFriend from './src/components/MakeFriend';
+
 
 
 export default function App() {
@@ -31,23 +35,26 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-
-
-           <Stack.Screen name="welcome" component={WelcomeScreen} />
-          <Stack.Screen name='resetpassword1' component={ResetPasswordForm}/>
-          <Stack.Screen name = 'newpassword' component={NewPasswordForm}/>
-          <Stack.Screen name='OTPVerifyResetPassword' component={OTPVerifyResetPassword}/>
+          <Stack.Screen name="welcome" component={WelcomeScreen} />
+          <Stack.Screen name='resetpassword1' component={ResetPasswordForm} />
+          <Stack.Screen name='newpassword' component={NewPasswordForm} />
+          <Stack.Screen name='OTPVerifyResetPassword' component={OTPVerifyResetPassword} />
           <Stack.Screen name="login" component={LoginScreen} />
-          <Stack.Screen name='register' component={FormRegister}/>
-          <Stack.Screen name="otpverify" component={OTPVerify} /> 
+          <Stack.Screen name='register' component={FormRegister} />
+          <Stack.Screen name="otpverify" component={OTPVerify} />
+          {/* <Stack.Screen name="YourComponent" component={YourComponent} /> */}
+          {/* <Stack.Screen name="MakeFriend" component={MakeFriend} />
+          <Stack.Screen name="FriendRequest" component={FriendRequest} />
+          <Stack.Screen name="SearchScreen" component={SearchScreen} />
+          <Stack.Screen name="tab" component={BottomTab} /> */}
           <Stack.Screen name="tab" component={BottomTab} />
           <Stack.Screen name="chat" component={ChatScreen} />
           <Stack.Screen name="chatbox" component={BoxChatScreen} />
           <Stack.Screen name="AccountAndSecurity" component={AccountAndSecurity} />
-          <Stack.Screen name="UpdatePassword" component={UpdatePassword} /> 
+          <Stack.Screen name="UpdatePassword" component={UpdatePassword} />
           <Stack.Screen name="changepassword" component={ChangePasswordScreen} />
           <Stack.Screen name="detailmyprofile" component={ProfileDisplay} />
-          <Stack.Screen name="updateinfo" component={UpdateInfomation}/>
+          <Stack.Screen name="updateinfo" component={UpdateInfomation} />
         </Stack.Navigator>
         <StatusBar style="auto" />
       </NavigationContainer>

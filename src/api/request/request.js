@@ -1,11 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
-export default async function requestApi(endpoint, method, body, isInterceptors, contenttype='application/json', navigation) {
+export default async function requestApi(endpoint, method, body, isInterceptors, contenttype = 'application/json', navigation) {
     const headers = {
         "Accept": "application/json",
         "Content-Type": contenttype,
         "Access-Control-Allow-Origin": "*",
+        "User-Agent": "mobile",
     };
     const instance = axios.create({ headers, baseURL: "http://10.0.2.2:8080/api/v1" });
     // const instance = axios.create({ headers, baseURL: "http://localhost:8080/api/v1" });

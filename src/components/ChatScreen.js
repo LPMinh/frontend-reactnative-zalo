@@ -1,7 +1,8 @@
-import React from 'react';
 import { View, ScrollView, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 import Header from './Header';
 import ItemMessage from './ItemMessage';
+import fetchData from '../api/service/listRooms_SenderID'
+import React, { useState, useEffect } from 'react';
 
 export default function ChatScreen({ navigation }) {
   const right = () => (
@@ -12,6 +13,7 @@ export default function ChatScreen({ navigation }) {
           style={{ width: 30, height: 30 }}
         />
       </TouchableOpacity>
+
       <TouchableOpacity>
         <Image
           source={require('../images/icon/add.jpg')}
@@ -114,6 +116,7 @@ export default function ChatScreen({ navigation }) {
   return (
     <View style={styles.ChatScreen}>
       <Header Right={right} />
+
       <ScrollView style={{ width: '100%' }}>
         <ItemMessage item={myCloud} />
         <FlatList
@@ -121,9 +124,9 @@ export default function ChatScreen({ navigation }) {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <ItemMessage item={item} navigation={navigation} />
-            
+
           )}
-          style={{ width: '100%' ,width:'100%'}}
+          style={{ width: '100%', width: '100%' }}
         />
       </ScrollView>
     </View>
