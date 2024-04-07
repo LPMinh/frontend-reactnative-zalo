@@ -5,13 +5,15 @@ import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'rea
 import Header from './Header';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function MyProfileScreen({ navigation }) {
   const [user, setUser] = useState({});
-  AsyncStorage.getItem('user').then((user) => {
-    setUser(JSON.parse(user));
-  });
+  useEffect(() => {
+    AsyncStorage.getItem("user").then((userData) => {
+      setUser(JSON.parse(userData));
+    });
+  }, []);
   const right = () => (
     <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
       <TouchableOpacity>

@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, ScrollView, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 import Header from './Header';
 import ItemMessage from './ItemMessage';
+import getUser from '../api/service/loaduser';
+import { getRooms } from '../api/service/room';
 
 export default function ChatScreen({ navigation }) {
   const right = () => (
@@ -22,19 +24,17 @@ export default function ChatScreen({ navigation }) {
   );
 
   const myCloud = {
-    id: 1,
-    user: {
+    roomId: 1,
+   
       name: 'Cloud của tôi',
       avatar: 'https://cdn-icons-png.flaticon.com/256/2525/2525758.png',
-    },
-    lastMessage: {
-      type: 'text',
-      content: 'Hello',
-    },
+   
+    lastestMessage:'Hello',
     lastMessageTime: '10:00 AM',
-    numberMessage: 1,
+    numberOfUnreadMessage: 1,
     isSeen: true,
     type: 'cloud',
+    time:[2024,4,7,10,0,0]
   };
 
   const data = [
@@ -111,14 +111,28 @@ export default function ChatScreen({ navigation }) {
     },
   ];
 
+  const [rooms, setRooms] = useState([]);
+  useEffect( () => {
+    const fetchRooms = async () => {
+      const user = await getUser();
+      const rooms = await getRooms(user.email);
+      console.log(rooms);
+      setRooms(rooms?.roomResponses);
+    }
+    fetchRooms();
+
+  }, []);
+
+
+
   return (
     <View style={styles.ChatScreen}>
-      <Header Right={right} />
+      <Header Right={right}/>
       <ScrollView style={{ width: '100%' }}>
         <ItemMessage item={myCloud} />
         <FlatList
-          data={data}
-          keyExtractor={(item) => item.id.toString()}
+          data={rooms}
+          keyExtractor={(item) => item.roomId.toString()}
           renderItem={({ item }) => (
             <ItemMessage item={item} navigation={navigation} />
             

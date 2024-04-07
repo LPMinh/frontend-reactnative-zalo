@@ -3,11 +3,25 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
+import moment from 'moment';
+import { useEffect, useState } from 'react';
+import { AsyncStorage } from 'react-native';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import getUser from '../api/service/loaduser';
 
 
 export default function ItemMessage({item,navigation}) {
- 
+
+  const [user,setUser] = useState({});
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userData = await getUser();
+      setUser(userData);
+    };
+
+    fetchUser();
+
+  }, []);
   const covertContentMessageByType = (type,content)=>{
       switch(type){
         case 'text':
@@ -20,19 +34,28 @@ export default function ItemMessage({item,navigation}) {
           return 'Đã gửi 1 tệp';
       }
   }
+  const convertTime = (time)=>{
+    let arr=Array.from(time);
+    let date= arr[0]+'-'+arr[1]+'-'+arr[2]
+    let hour= arr[3].toString()+arr[4].toString();
+    let minute= arr[5];
+    let datetime = date+' '+hour+':'+minute;
+
+    return datetime
+  }
   return (
-    <TouchableOpacity style={styles.container} onPress={()=>navigation.navigate('chatbox',{receciver:item.user})}>
+    <TouchableOpacity style={styles.container} onPress={()=>navigation.navigate('chatbox',{info:item})}>
         <View style={[styles.wrap,{ backgroundColor: item.type==='cloud'?'#F9F9F9':'#fff',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}]}>
-                <Image style={{height:50,width:50,borderRadius:50}} source={{uri:item?.user?.avatar}}/>
+                <Image style={{height:50,width:50,borderRadius:50}} source={{uri:item?.avatar}}/>
                 
                 <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
                     <View style={{width:'80%',height:'100%',justifyContent:'flex-start',alignItems:'flex-start',marginLeft:10}}>
-                        <Text style={{fontWeight:item.isSeen===true?'normal':'bold',fontSize:18}}>{item.user.name}</Text>
-                        <Text style={{color:item.isSeen===true?"gray":"black",fontWeight:item.isSeen==true?'normal':'bold'}}>{covertContentMessageByType(item.lastMessage.type,item.lastMessage.content)}</Text>
+                        <Text style={{fontWeight:item.isSeen===true?'normal':'bold',fontSize:18}}>{item.name}</Text>
+                        <Text style={{color:item.isSeen===true?"gray":"black",fontWeight:item.isSeen==true?'normal':'bold'}}>{item.latestMessage}</Text>
                     </View>
                     <View style={{width:'20%',height:'100%',justifyContent:'center',alignItems:'flex-end'}}>
-                        <Text>{item.lastMessageTime}</Text>
-                        <Text style={{backgroundColor:'red',borderRadius:40,paddingHorizontal:5,color:'#fff'}}>{item.numberMessage}</Text>
+                        <Text>{convertTime(item.time)}</Text>
+                        <Text style={{backgroundColor:'red',borderRadius:40,paddingHorizontal:5,color:'#fff'}}>{item.numberOfUnreadMessage}</Text>
                     </View>
                 </View>
                

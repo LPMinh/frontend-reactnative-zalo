@@ -105,8 +105,12 @@ export default function FormRegister({ navigation }) {
       aspect: [4, 3],
       quality: 1,
     });
-    if (!result.canceled) {
+    if (!result.cancelled && result.assets.length > 0 && result.assets[0].uri) {
+      // Kiểm tra xem đã chọn hình ảnh và có uri không
       setImage(result.assets[0].uri);
+    } else {
+      // Nếu không có hình ảnh hoặc bị hủy bỏ, bạn có thể cảnh báo cho người dùng hoặc thực hiện hành động phù hợp khác
+      alert("Vui lòng chọn một hình ảnh hợp lệ.");
     }
   };
 

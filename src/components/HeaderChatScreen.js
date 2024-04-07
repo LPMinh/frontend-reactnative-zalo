@@ -13,7 +13,7 @@ export default function HeaderChatScreen({receciver,navigation}) {
     <View style={styles.container}>
         <View style={[styles.wrap,{ backgroundColor:'#0895FB',flexDirection:'row',justifyContent:'space-between'}]}>
                 <View style={{flexDirection:'row',alignItems:'center'}}>
-                        <TouchableOpacity onPress={()=>{navigation.goBack()}}>
+                        <TouchableOpacity onPress={()=>navigation.navigate("tab")}>
                             <Image source={require('../images/icon/left-arrow.png')} style={{width:30,height:30}}></Image>
                         </TouchableOpacity>
                         <View style={{flexDirection:'column',alignItems:'flex-start',justifyContent:'center'}}>

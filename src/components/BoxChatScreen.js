@@ -5,131 +5,108 @@ import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View }
 import Header from './Header';
 import ItemMessage from './ItemMessage';
 import HeaderChatScreen from './HeaderChatScreen';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import FooterBoxChat from './FooterBoxChat';
 import Message from './Message';
 import BoxSticker from './BoxSticker';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import EmojiPicker from 'emoji-picker-react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getMessages } from '../api/service/chat';
+import { addChat, setChat, setReceiver, setUser } from '../reduxtoolkit/slice/ChatReducer';
+import SockJS from 'sockjs-client';
+import { over } from 'stompjs';
+import getUser from '../api/service/loaduser';
 
 export default function BoxChatScreen({navigation,route}) {
-  const receciver=route.params.receciver;
-  const user=useSelector(state=>state.appChat.user)
+  const info=route.params.info;
   const [showBoxSticker,setShowBoxSticker]=useState(false);
   const handleShowBoxSticker=()=>setShowBoxSticker(!showBoxSticker);
-  const listMessage=[
-    {
-      id:1,
-      content:{
-        type:'text',
-        content:'Hello',
-        time:'10:00'
-      },
-      sender:user,
-      receciver:receciver,
-      
-    },
-    {
-      id:2,
-      content:{
-        type:'image',
-        content:'https://cdn.pixabay.com/photo/2015/04/19/08/32/marguerite-729510_640.jpg',
-        time:'10:00'
-      },
-      sender:receciver,
-      receciver:user,
-     
-    },
-    {
-      id:3,
-      content:{
-        type:'text',
-        content:'Nic to meet you',
-        time:'10:00'
-      },
-      sender:user,
-      receciver:receciver,
-      
-    },
-    {
-      id:4,
-      content:{
-        type:'text',
-        content:'Nice to meet you too',
-        time:'10:00'
-      },
-      sender:receciver,
-      receciver:user,
-      
-    },
-    {
-      id:5,
-      content:{
-        type:'text',
-        content:'How are you?',
-        time:'10:00'
-      },
-      sender:user,
-      receciver:receciver,
-     
-    },
-    {
-      id:6,
-      content:{
-        type:'text',
-        content:'I am fine',
-        time:'10:00'
-      },
-      sender:receciver,
-      receciver:user,
-    },
-    {
-      id:7,
-      content:{
-        type:'text',
-        content:'Goodbye',
-        time:'10:00'
+  const user = useSelector((state) => state.appChat.user);    
+  const dispatch = useDispatch();
+  const messages = useSelector((state) => state.appChat.messages);
 
-      },
-      sender:user,
-      receciver:receciver,
+  const listMessage = async () => {
+    let user = null;
+    try {
+      const userData = await AsyncStorage.getItem("user");
+      user = JSON.parse(userData);
+      const data = await getMessages(info.roomId, user.email);
+      dispatch(setUser(user));
+      const receiver = info.receciverId;
+    
       
-    },
-    {
-      id:8,
-      content:{
-        type:'text',
-        content:'Goodbye'
-      },
-      sender:receciver,
-      receciver:user,
-      time:'10:00'
+      dispatch(setReceiver(receiver));
+      return data;
+    } catch (error) {
+      console.log("Error fetching data: ", error);
+      return [];
     }
-  ]
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await listMessage();
+      dispatch(setChat(data.messages));
+      connect();
+    };
+
+    fetchData();
+
+    return () => {
+      // Dọn dẹp kết nối WebSocket khi unmount
+      connect().then(disconnect => disconnect());
+    };
+  }, []);
+
+  const connect = async () => {
+    let sock = new SockJS("http://10.0.2.2:8080/ws");
+    const stompClient = over(sock);
+    const user = await getUser();
+    stompClient.connect(
+      {},
+      function (frame) {
+        stompClient.subscribe(
+          "/user/" + user.email + "/queue/messages",
+          function (message) {
+            const mess = JSON.parse(message.body);
+            dispatch(addChat(mess.message));
+          }
+        );
+      },
+      (error) => {
+        console.log("Error: ", error);
+      }
+    );
+
+    return () => {
+      stompClient.disconnect();
+    };
+  };
+
+const getRecevier=()=>{
+  
+  if(info.sender===true){
+    return info.receciverId;
+  }
+  return info.senderId;
+}
 
   return (
     <View style={styles.ChatScreen}>
-        <HeaderChatScreen receciver={receciver} navigation={navigation} />
-        {/* <ScrollView style={{width:'100%',height:600,direction:'inherit',backgroundColor:'#E2E9F1'}}>  
-              {
-                listMessage.map((item,index)=>{
-                  return <Message key={index} item={item.content}  sender={item.sender}  receiver={item.receciver} user={user} />
-                })
-              }
-        </ScrollView> */}
+        <HeaderChatScreen receciver={info} navigation={navigation} />
         <FlatList
-          data={listMessage}
-          keyExtractor={(item) => item.id.toString()}
+          data={messages}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <Message item={item.content} sender={item.sender} receiver={item.receciver} user={user} />
+            <Message item={item} sender={item.senderId} receiver={item.receiverId}  avt={info.avatar} user={user} />
           )}
           style={{ width: '100%' ,width:'100%'}}
         />
-        <FooterBoxChat onShowBoxSticker={setShowBoxSticker}/>
+        <FooterBoxChat onShowBoxSticker={setShowBoxSticker} info={info}/>
         {/* {
           showBoxSticker?<BoxSticker/>:null
         } */}
-        
         
     </View>
   );

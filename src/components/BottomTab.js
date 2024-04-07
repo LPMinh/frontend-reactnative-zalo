@@ -7,9 +7,40 @@ import MyProfileScreen from './MyProfileScreen';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faAddressBook, faComment, faHouse, faHouseChimneyWindow, faMugSaucer, faPersonWalkingDashedLineArrowRight, faRocket, faWindowClose } from '@fortawesome/free-solid-svg-icons';
 import { Image } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import useWebSocket from 'react-native-use-websocket';
+import { connect } from '../api/service/connect';
 
 function BottomTab() {
      const Tab = createBottomTabNavigator();
+     const [user, setUser] = useState({});//[1
+     const ws = useRef(null);
+     
+     useEffect(() => {
+          
+          console.log("initSocket");
+          const onConnected = () => {
+               console.log("Connected");
+          }
+          const onMessage = (message) => {
+               console.log("Message: ", message);
+          }
+          const onError = (error) => {
+               console.log("Error: ", error);
+          }
+          connect(onConnected,onError);
+          
+
+          
+     }, []);
+
+     
+    
+
+     
+
+
      return (
           <Tab.Navigator
                screenOptions={
