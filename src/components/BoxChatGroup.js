@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
-import { Alert, FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, FlatList, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Header from './Header';
 import ItemMessage from './ItemMessage';
 import HeaderChatScreen from './HeaderChatScreen';
@@ -18,13 +18,15 @@ import SockJS from 'sockjs-client';
 import { over } from 'stompjs';
 import getUser from '../api/service/loaduser';
 import { getRooms } from '../api/service/room';
+import MessageGroup from './MessageGroup';
 
-export default function BoxChatScreen({navigation,route}) {
+export default function BoxChatGroupScreen({navigation,route}) {
   const receiverId = route.params.receiverId;
   const senderId = route.params.senderId;
   const avatar = route.params.avatar;
   const name = route.params.name;
   const roomId = route.params.roomId;
+  const roomInfo= {receiverId,senderId,avatar,name,roomId};
   console.warn('receiverId',receiverId);
   console.warn('senderId',senderId);
   const [stompClient, setStompClient] = useState(null);
@@ -33,15 +35,14 @@ export default function BoxChatScreen({navigation,route}) {
   const user = useSelector((state) => state.appChat.user);    
   const dispatch = useDispatch();
   const messages = useSelector((state) => state.appChat.messages);
-
+  const baseURLWebSocket = (Platform.OS === 'web') ? 'http://localhost:8080/ws' : 'http://10.0.2.2:8080/ws';
   const listMessage = async () => {
     let user = null;
     try {
       const userData = await AsyncStorage.getItem("user");
-      console.warn('userData',userData)
+ 
       user = JSON.parse(userData);
-      // const roomId = senderId + '_' + receiverId;
-      // const roomId2 = receiverId + '_' + senderId;
+     
       const data = await getMessages(roomId, user.email);
       if(data.messages.length===0){
        const  data2 = await getMessages(roomId, user.email);
@@ -69,10 +70,9 @@ export default function BoxChatScreen({navigation,route}) {
     const connectAndFetchData = async () => {
       await connect();
       fetchData();
+
     };
-  
     connectAndFetchData();
-  
     return () => {
       // Dọn dẹp kết nối WebSocket khi unmount
       if (stompClientRef.current) {
@@ -81,16 +81,9 @@ export default function BoxChatScreen({navigation,route}) {
     };
   }, []);
   
-  const fetchRooms = async () => {
-    const user = await getUser();
-    const rooms = await getRooms(user.email);
-    console.log(rooms);
-    dispatch(setListRoom(rooms.roomResponses));
-  };
-  
   const connect = async () => {
-    let sock = new SockJS("http://10.0.2.2:8080/ws");
-    // let sock = new SockJS("http://localhost:8080/ws");
+    // let sock = new SockJS("http://10.0.2.2:8080/ws");
+    let sock = new SockJS(baseURLWebSocket);
     const stompClient = over(sock);
     stompClientRef.current = stompClient; // Save a reference for cleanup
   
@@ -99,10 +92,11 @@ export default function BoxChatScreen({navigation,route}) {
       {},
       function (frame) {
         stompClient.subscribe(
-          "/user/" + user.email + "/queue/messages",
+          "/user/" +roomId+ "/queue/messages",
           function (message) {
-              fetchData();
-              fetchRooms();
+            console.log("Received: ", message);
+            
+            fetchData();
           }
         );
       },
@@ -110,6 +104,7 @@ export default function BoxChatScreen({navigation,route}) {
         console.log("Error: ", error);
       }
     );
+    
   
     return () => {
       if (stompClientRef.current) {
@@ -117,37 +112,24 @@ export default function BoxChatScreen({navigation,route}) {
       }
     };
   };
+
+
+  
   
   const stompClientRef = useRef(null);
 
 
-  const flatListRef = useRef(null);
-
-
-  useEffect(() => {
-
-    scrollToBottom();
-  }, [messages]);
-
-
-  const scrollToBottom = () => {
-    if (flatListRef.current) {
-      flatListRef.current.scrollToEnd({ animated: true });
-    }
-  };
 
   return (
     <View style={styles.ChatScreen}>
-        <HeaderChatScreen  name={name} avatar={avatar} navigation={navigation} />
+        <HeaderChatScreen roomInfo={roomInfo}  name={name} avatar={avatar} navigation={navigation} />
         <FlatList
           data={messages}
-         
-          ref={flatListRef}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <Message item={item} sender={senderId} receiver={receiverId}  avt={avatar} user={user} />
+            <MessageGroup roomId={roomId} item={item} sender={senderId} receiver={receiverId}  avt={avatar} user={user}  />
           )}
-          style={{ width: '100%' ,height:'70%',flexDirection:'column-reverse'}}
+          style={{ width: '100%' ,height:'90%',flexDirection:'column-reverse',backgroundColor:'#E2E9F1'}}
         />
         <FooterBoxChat onShowBoxSticker={setShowBoxSticker} receciverId={receiverId} senderId={senderId}/>
         {/* {
@@ -165,7 +147,9 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     width:'100%',
-   height:'auto'
+    height:'100%',
+  
+
    
   }
 });

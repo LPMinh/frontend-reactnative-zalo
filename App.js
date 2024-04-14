@@ -23,16 +23,30 @@ import NewPasswordForm from './src/components/NewPassowordForm';
 import ChangePasswordScreen from './src/components/ChangePasswordForm';
 import ProfileDisplay from './src/components/DetailMyProfile';
 import UpdateInfomation from './src/components/UpdateInfomation';
+import { Stomp } from '@stomp/stompjs';
+import SearchScreen from './src/components/SearchScreen';
+import MakeFriend from './src/components/MakeFriend';
+import BoxChatGroupScreen from './src/components/BoxChatGroup';
+import CreateGroupScreen from './src/components/CreateGroup';
+import DetailGroup from './src/components/DetailGroup';
+import ListMember from './src/components/ListMember';
+import AddMember from './src/components/AddMember';
+import MemberManagerment from './src/components/MemberManagement';
+import AdminManagement from './src/components/AdminManagement';
+
+
+
+
 
 
 export default function App() {
   const Stack = createStackNavigator();
+  
+
   return (
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-
-
            <Stack.Screen name="welcome" component={WelcomeScreen} />
           <Stack.Screen name='resetpassword1' component={ResetPasswordForm}/>
           <Stack.Screen name = 'newpassword' component={NewPasswordForm}/>
@@ -48,6 +62,15 @@ export default function App() {
           <Stack.Screen name="changepassword" component={ChangePasswordScreen} />
           <Stack.Screen name="detailmyprofile" component={ProfileDisplay} />
           <Stack.Screen name="updateinfo" component={UpdateInfomation}/>
+          <Stack.Screen name= "search" component={SearchScreen}/>
+          <Stack.Screen name="makefriend" component={MakeFriend}/>
+          <Stack.Screen name="creategroup" component={CreateGroupScreen}/>
+          <Stack.Screen name="chatboxgroup" component={BoxChatGroupScreen} />
+          <Stack.Screen name="detailgroup" component={DetailGroup}/>
+          <Stack.Screen name='listmember' component={ListMember}/>
+          <Stack.Screen name="addMember" component={AddMember} />
+          <Stack.Screen name="membermanagement" component={MemberManagerment} />
+          <Stack.Screen name ="admin" component={AdminManagement} />
         </Stack.Navigator>
         <StatusBar style="auto" />
       </NavigationContainer>

@@ -12,5 +12,4 @@ const register = async (user) => {
     });
     return respone;
 }
-
 export default register;

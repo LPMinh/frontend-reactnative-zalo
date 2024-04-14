@@ -9,7 +9,7 @@ export const sendMessageText = async (senderId,receiverId,textContent,messageTyp
     formdata.append('messageStatus', messageStatus);
     formdata.append('hiddenSenderSide', hiddenSenderSide);
    try{
-    const response = await requestApi("/messages/chat", "POST", formdata, null, "multipart/form-data",null);
+    const response = await requestApi("/messages/chat", "POST", formdata, true, "multipart/form-data",null);
     return response.data;
     }catch(error){
         console.log(error);
@@ -19,19 +19,64 @@ export const sendMessageText = async (senderId,receiverId,textContent,messageTyp
 
 export const sendMessageImge = async (senderId,receiverId,fileContent,messageType='IMAGE',messageStatus='SENT',hiddenSenderSide) => {
     const formdata = new FormData();
-    console.log("fileContent",fileContent);
+    formdata.append('fileContent', fileContent);
     formdata.append('senderId', senderId);
     formdata.append('receiverId', receiverId);
-    formdata.append('fileContent', fileContent);
     formdata.append('messageType', messageType);
     formdata.append('messageStatus', messageStatus);
     formdata.append('hiddenSenderSide', hiddenSenderSide);
    try{
-    const response = await requestApi("/messages/chat", "POST", formdata, null, "multipart/form-data");
+    const response = await requestApi("/messages/chat", "POST", formdata, true, "multipart/form-data",null);
     return response.data;
+    }catch(error){
+        console.error("error in send image",error.response.data);
+        return Promise.reject(error);
+    }
+};
+
+export const sendMessageFile = async (senderId,receiverId,fileContent,messageType='FILE',messageStatus='SENT',hiddenSenderSide) => {
+    const formdata = new FormData();
+    formdata.append('fileContent', fileContent);
+    formdata.append('senderId', senderId);
+    formdata.append('receiverId', receiverId);
+    formdata.append('messageType', messageType);
+    formdata.append('messageStatus', messageStatus);
+    formdata.append('hiddenSenderSide', hiddenSenderSide);
+   try{
+    const response = await requestApi("/messages/chat", "POST", formdata, true, "multipart/form-data",null);
+    return response.data;
+    }catch(error){
+        console.error("error in send image",error);
+        return Promise.reject(error);
+    }
+};
+
+
+export const revokeMessages = async (messageId,receiverId,senderId)=>{
+    try{
+        const response = await requestApi(`/messages/revokeMessage`, "POST", {messageId,receiverId,senderId}, true, "application/json");
+        return response.data;
     }catch(error){
         console.log(error);
         return Promise.reject(error);
     }
-};
+}
+
+export const sendMessageVideo = async (senderId,receiverId,fileContent,messageType='VIDEO',messageStatus='SENT',hiddenSenderSide) => {
+    const formdata = new FormData();
+    formdata.append('fileContent', fileContent);
+    formdata.append('senderId', senderId);
+    formdata.append('receiverId', receiverId);
+    formdata.append('messageType', messageType);
+    formdata.append('messageStatus', messageStatus);
+    formdata.append('hiddenSenderSide', hiddenSenderSide);
+   try{
+    const response = await requestApi("/messages/chat", "POST", formdata, true, "multipart/form-data",null);
+    return response.data;
+    }catch(error){
+        console.error("error in send image",error);
+        return Promise.reject(error);
+    }
+}
+
 

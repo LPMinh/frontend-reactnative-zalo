@@ -11,7 +11,6 @@ import getUser from '../api/service/loaduser';
 
 
 export default function ItemMessage({item,navigation}) {
-
   const [user,setUser] = useState({});
   useEffect(() => {
     const fetchUser = async () => {
@@ -22,18 +21,7 @@ export default function ItemMessage({item,navigation}) {
     fetchUser();
 
   }, []);
-  const covertContentMessageByType = (type,content)=>{
-      switch(type){
-        case 'text':
-          return content;
-        case 'image':
-          return 'Đã gửi 1 ảnh';
-        case 'sticker':
-          return 'Đã gửi 1 nhãn dán';
-        default:
-          return 'Đã gửi 1 tệp';
-      }
-  }
+
   const convertTime = (time)=>{
     let arr=Array.from(time);
     let date= arr[0]+'-'+arr[1]+'-'+arr[2]
@@ -43,24 +31,63 @@ export default function ItemMessage({item,navigation}) {
 
     return datetime
   }
+  const getRecevier = (item)=>{
+    if(item.sender===true){
+      return item.receiverId;
+    }else{
+      return item.senderId;
+    
+    }
+  }
+  const getSender = (item)=>{
+    if(item.sender===true){
+      return item.senderId;
+    }else{
+      return item.receiverId;
+    
+    }
+  }
+
+  
   return (
-    <TouchableOpacity style={styles.container} onPress={()=>navigation.navigate('chatbox',{info:item})}>
+    <View style={styles.container}>
+      {item.roomType==='GROUP_CHAT'?
+    <TouchableOpacity style={styles.container} onPress={()=>navigation.navigate('chatboxgroup',{receiverId:getRecevier(item),senderId:getSender(item),avatar:item?.avatar,name:item?.name,roomId:item?.roomId})}>
         <View style={[styles.wrap,{ backgroundColor: item.type==='cloud'?'#F9F9F9':'#fff',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}]}>
                 <Image style={{height:50,width:50,borderRadius:50}} source={{uri:item?.avatar}}/>
                 
                 <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
                     <View style={{width:'80%',height:'100%',justifyContent:'flex-start',alignItems:'flex-start',marginLeft:10}}>
-                        <Text style={{fontWeight:item.isSeen===true?'normal':'bold',fontSize:18}}>{item.name}</Text>
-                        <Text style={{color:item.isSeen===true?"gray":"black",fontWeight:item.isSeen==true?'normal':'bold'}}>{item.latestMessage}</Text>
+                        <Text style={{fontWeight:item.sender===true?'normal':'bold',fontSize:18}}>{item.name}</Text>
+                        <Text style={{color:item.sender===true?"gray":"black",fontWeight:item.sender==true?'normal':'bold'}}>{item.latestMessage}</Text>
                     </View>
                     <View style={{width:'20%',height:'100%',justifyContent:'center',alignItems:'flex-end'}}>
                         <Text>{convertTime(item.time)}</Text>
-                        <Text style={{backgroundColor:'red',borderRadius:40,paddingHorizontal:5,color:'#fff'}}>{item.numberOfUnreadMessage}</Text>
+                        {item.numberOfUnreadMessage>0?<Text style={{backgroundColor:'red',borderRadius:40,paddingHorizontal:5,color:'#fff'}}>{item.numberOfUnreadMessage}</Text>:<></>}
                     </View>
                 </View>
                
         </View>
     </TouchableOpacity>
+    :
+    <TouchableOpacity style={styles.container} onPress={()=>navigation.navigate('chatbox',{receiverId:getRecevier(item),senderId:getSender(item),avatar:item?.avatar,name:item?.name,roomId:item?.roomId})}>
+    <View style={[styles.wrap,{ backgroundColor: item.type==='cloud'?'#F9F9F9':'#fff',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}]}>
+            <Image style={{height:50,width:50,borderRadius:50}} source={{uri:item?.avatar}}/>
+            
+            <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
+                <View style={{width:'80%',height:'100%',justifyContent:'flex-start',alignItems:'flex-start',marginLeft:10}}>
+                    <Text style={{fontWeight:item.isSeen===true?'normal':'bold',fontSize:18}}>{item.name}</Text>
+                    <Text style={{color:item.isSeen===true?"gray":"black",fontWeight:item.isSeen==true?'normal':'bold'}}>{item.latestMessage}</Text>
+                </View>
+                <View style={{width:'20%',height:'100%',justifyContent:'center',alignItems:'flex-end'}}>
+                    <Text>{convertTime(item.time)}</Text>
+                    <Text style={{backgroundColor:'red',borderRadius:40,paddingHorizontal:5,color:'#fff'}}>{item.numberOfUnreadMessage}</Text>
+                </View>
+            </View>
+           
+    </View>
+</TouchableOpacity>}
+    </View>
   );
 }
 

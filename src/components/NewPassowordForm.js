@@ -102,7 +102,6 @@ useEffect(() => {
         <FontAwesomeIcon icon={faEnvelope} style={styles.icon} />
         <TextInput
           style={styles.input}
-          dis
           placeholderTextColor="#aaa"
           keyboardType="email-address"
           autoCapitalize="none"

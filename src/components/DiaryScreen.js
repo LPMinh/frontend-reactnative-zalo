@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addNotifyAddFriend,
   removeNotifyAddFriend,
+  setFriends,
   setNotifyAddFriend,
 } from "../reduxtoolkit/slice/NotifyReducer";
 import SockJS from "sockjs-client";
@@ -28,65 +29,34 @@ import { over } from "stompjs";
 import {
   acceptRequest,
   getAllRequestAddFriendByReciverId,
+  getFriendByUserId,
   rejectRequest,
 } from "../api/service/nofityaddfriend";
 import { ca } from "react-native-paper-dates";
 import getUser from "../api/service/loaduser";
 
-export default function FriendRequest() {
+export default function FriendRequest({ navigation, route}) {
   const dispatch = useDispatch();
   const notify = useSelector((state) => state.notifyAddFriend.notifyAddFriend);
-  console.log(notify);
-  const listRequest = async () => {
-    let user = null;
+ 
+  const fethListFriend = async () => {
     try {
-      const userData = await AsyncStorage.getItem("user");
-      user = JSON.parse(userData);
-      const data = await getAllRequestAddFriendByReciverId(user.email);
-      console.log(data);
-      return data;
+         const user = await AsyncStorage.getItem('user');
+         const userParse = JSON.parse(user);
+         const listfriend = await getFriendByUserId(userParse.email);
+         console.log('listfriend', listfriend);
+         dispatch(setFriends(listfriend));
     } catch (error) {
-      console.log("Error fetching data: ", error);
-      return [];
+         console.log('Error fetching data: ', error);
     }
-  };
-
-  useEffect(async () => {
-    const data = await listRequest();
-    dispatch(setNotifyAddFriend(data));
-    connect();
-  }, []);
-
-  const connect = async () => {
-    let sock = new SockJS("http://localhost:8080/ws");
-    const stompClient = over(sock);
-    const user = await getUser();
-    stompClient.connect(
-      {},
-      function (frame) {
-        console.log("Connected: " + frame);
-        stompClient.subscribe(
-          "/user/" + user.email + "/queue/friend-request",
-          function (message) {
-            const friendRequest = JSON.parse(message.body);
-            dispatch(addNotifyAddFriend(friendRequest));
-          }
-        );
-      },
-      (error) => {
-        console.log("Error: ", error);
-      }
-    );
-
-    return () => {
-      stompClient.disconnect();
-    };
-  };
+  }
+ 
 
   const handleAccept = async (notify) => {
     const user = await getUser();
     try {
       await acceptRequest(user.email, notify.user.email);
+      await fethListFriend();
       dispatch(removeNotifyAddFriend(notify.user.email));
     } catch (error) {
       console.log("Error: ", error);

@@ -6,7 +6,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 
 export default function WelcomeScreen({ navigation }) {
-  
+
   return (
     <View style={styles.container}>
       <Image
@@ -37,7 +37,7 @@ export default function WelcomeScreen({ navigation }) {
             alignItems: "center",
           }}
           onPress={() => navigation.push("register")}
-          >
+        >
           <Text>Đăng ký</Text>
         </TouchableOpacity>
       </View>

@@ -1,10 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createSlice } from "@reduxjs/toolkit";
+import { addFriend } from "../../api/service/nofityaddfriend";
 
 
 const notifyAddFriendSlice = createSlice({
     initialState: {
         notifyAddFriend: [],
+        friendList: []
     },
     name: 'appNotifyAddFriend',
     reducers: {
@@ -16,11 +18,17 @@ const notifyAddFriendSlice = createSlice({
         },
         removeNotifyAddFriend: (state, action) => {
             state.notifyAddFriend = state.notifyAddFriend.filter((item) => item.user.email !== action.payload);
-        }
+        },
+        setFriends: (state, action) => {
+            state.friendList = action.payload;
+        },
+        addFriendtoList: (state, action) => {
+            state.friendList.push(action.payload);
+        },
     }
 });
 
-export const { setNotifyAddFriend, addNotifyAddFriend, removeNotifyAddFriend } = notifyAddFriendSlice.actions;
+export const { setNotifyAddFriend, addNotifyAddFriend, removeNotifyAddFriend, setFriends, addFriendtoList} = notifyAddFriendSlice.actions;
 export const notifyAddFriendReducer = notifyAddFriendSlice.reducer;
 
 

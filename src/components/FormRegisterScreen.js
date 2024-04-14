@@ -136,7 +136,7 @@ export default function FormRegister({ navigation }) {
       email.length === 0
     ) {
       setIsDisable(true);
-    } else if ( !validName.valid || !validPassword.valid || !validRePassword.valid || !validEmail.valid) {
+    } else if (!validName.valid || !validPassword.valid || !validRePassword.valid || !validEmail.valid) {
       setIsDisable(false);
     } else {
       setIsDisable(false);
@@ -156,7 +156,7 @@ export default function FormRegister({ navigation }) {
       validRePassword.valid
     ) {
       const fileName = await updateload(image);
-     
+
       const user = {
         name: name,
         phoneNumber: phone,
@@ -352,7 +352,7 @@ export default function FormRegister({ navigation }) {
                   onChangeText={setRePassword}
                   value={rePassword}
                   onBlur={() => checkRepassword(rePassword, password)}
-                  
+
                 />
                 <Text style={styles.error}>{validRePassword.message}</Text>
               </View>
@@ -453,6 +453,6 @@ const styles = StyleSheet.create({
   error: {
     color: "red",
     width: "100%",
-   
+
   },
 });
