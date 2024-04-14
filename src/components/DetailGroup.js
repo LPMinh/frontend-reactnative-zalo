@@ -84,8 +84,8 @@ export default  function  DetailGroup  ({navigation,route}) {
         const memberId=user.email;
         try{
             const response=await leaveGroup(memberId,groupId);
-            Alert('Rời nhóm thành công');
-            return navigation.goBack();
+            
+            return navigation.navigate('chat');
 
         }catch(error){
           console.error(error.response.data);
