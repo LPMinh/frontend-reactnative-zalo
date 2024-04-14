@@ -79,4 +79,14 @@ export const sendMessageVideo = async (senderId,receiverId,fileContent,messageTy
     }
 }
 
+export const forwardMessage = async (senderId,receiversId,messageId) => {
+    try{
+        const response = await requestApi(`/messages/forwardMessage`, "POST", {senderId,receiversId,messageId}, true, "application/json");
+        return response.data;
+    }catch(error){
+        console.error("error in forward message",error);
+        return Promise.reject(error);
+    }
+}
+
 

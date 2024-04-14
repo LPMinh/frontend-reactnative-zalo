@@ -6,14 +6,18 @@ import {
   faFile,
   faFilePdf,
   faFileWord,
+  faForward,
+  faMagnifyingGlass,
   faXRay,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import { Video, ResizeMode } from "expo-av";
 import {
+  Alert,
   Button,
   Dimensions,
+  FlatList,
   Image,
   Linking,
   Modal,
@@ -22,19 +26,43 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { revokeMessages } from "../api/service/message";
+import { forwardMessage, revokeMessages } from "../api/service/message";
 
 import getUser from "../api/service/loaduser";
+import { useDispatch, useSelector } from "react-redux";
+import { TextInput } from "react-native-paper";
 
 
 export default function MessageGroup({ item, receiver, user, sender, avt,roomId,navigation }) {
   const isSender = user.email === item.senderId;
+  
   const video = useRef(null);
   const [status, setStatus] = useState({});
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [videoSize, setVideoSize] = useState({ width: 200, height: 400 });
+  const [showForwardModal, setShowForwardModal] = useState(false);
+  const friendFromRedux = useSelector((state) => state.notifyAddFriend.friendList);
+  const [memberSelected,setMemberSelected]=useState([]);
+  const [itemSelected, setItemSelected] = useState([]);
+ 
+  const dispatch = useDispatch();
+  const handleSelectMember=(email)=>{
+      if(isSelected(email)){
+          setMemberSelected(memberSelected.filter(item=>item!==email));
+      }else{
+          setMemberSelected([...memberSelected,email]);
+      }
+  }
+
+
+  const isSelected=(id)=>{
+    return memberSelected.includes(id);
+}
   const toggleFullScreen = () => {
     setIsFullScreen(!isFullScreen);
+  };
+  const handleForwardPress = () => {
+    setShowForwardModal(true);
   };
   useEffect(() => {
     Dimensions.addEventListener("change", () => {
@@ -47,6 +75,19 @@ export default function MessageGroup({ item, receiver, user, sender, avt,roomId,
   }, [isFullScreen]);
  
   const [showModal, setShowModal] = useState(false);
+
+  const handleForwardMessage = async () => { 
+    try {
+      const user= await getUser();
+      const messageId=item.id;
+      const senderId=user.email;
+      const receiversId=memberSelected;
+      await forwardMessage(senderId,receiversId,messageId);
+      Alert.alert("Chuyển tiếp tin nhắn thành công");
+    } catch (err) {
+      console.error(err);
+    }
+  };
  
   const handleRevokeMessage = async (messageId) => {
     try {
@@ -263,7 +304,13 @@ export default function MessageGroup({ item, receiver, user, sender, avt,roomId,
               <Text style={styles.buttonText}>Thu Hồi</Text>
             </TouchableOpacity>
           }
-            
+            <TouchableOpacity
+              style={[styles.button, styles.redButton]}
+              onPress={setShowForwardModal}
+            >
+                <FontAwesomeIcon icon={faForward} style={{color:'white',fontSize:20}}/>
+              <Text style={styles.buttonText}>Chuyển Tiếp</Text>
+            </TouchableOpacity>
             <TouchableOpacity
               style={[styles.button, styles.blueButton,{backgroundColor:'red'}]}
               onPress={() => 
@@ -276,6 +323,47 @@ export default function MessageGroup({ item, receiver, user, sender, avt,roomId,
           </View>
         </View>
       </Modal>
+      <Modal visible={showForwardModal} animationType="slide" transparent={true}>
+  <View style={styles.modalContainer}>
+    <View style={styles.modalContent}>
+     
+ 
+           
+            <View style={{width:'100%',backgroundColor:'#0895FB',flexDirection:'row',justifyContent:'flex-start',alignItems:'center',padding:10}}>
+                <Text style={{fontSize:16,fontWeight:'bold'}}>Danh Sách Bạn Bè</Text>
+            </View>
+            <View style={{flexDirection:'row',alignItems:'center',justifyContent:'center',padding:10}}>
+               <FontAwesomeIcon icon={faMagnifyingGlass} style={{color:'black',fontSize:20}}/>
+                <TextInput style={{width:'70%',height:50,backgroundColor:'white',borderRadius:5}} placeholder='nội dung'/>
+            </View>   
+            <View style={{width:'100%',flexDirection:'row',justifyContent:'flex-start',alignItems:'center',padding:10}}> 
+                <FlatList
+                
+                data={friendFromRedux}
+                keyExtractor={(item) => item.email}
+                renderItem={({ item }) => (
+                    <View style={{flexDirection:'row',alignItems:'center',justifyContent:'flex-start',padding:10 }}>
+                        <TouchableOpacity style={{width:30,height:30,borderRadius:50,borderWidth:1,backgroundColor:isSelected(item.email)?'gray':'white' }}  onPress={()=>{handleSelectMember(item.email)}}></TouchableOpacity>
+                        <Image source={{uri:item.avatar}} style={{width:50,height:50,borderRadius:50,marginLeft:20}}/>
+                        <Text style={{marginLeft:10}}>{item.name}</Text>
+                    </View>
+
+                )}
+                />
+            </View>
+            <TouchableOpacity style={{width:'100%',height:50,backgroundColor:'blue',justifyContent:'center',alignItems:'center',borderRadius:5,marginTop:10}} onPress={handleForwardMessage} >
+                <Text style={{color:'white',fontSize:16,fontWeight:'bold'}}>Chuyển Tiếp</Text>
+            </TouchableOpacity>
+      
+      
+      <TouchableOpacity
+        style={[styles.button, styles.redButton]}
+        onPress={() => setShowForwardModal(false)}>
+        <FontAwesomeIcon icon={faClose} style={{ color: 'white', fontSize: 20 }} />
+      </TouchableOpacity>
+    </View>
+  </View>
+</Modal>
     </View>
   );
 }

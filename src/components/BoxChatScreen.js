@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
-import { Alert, FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, FlatList, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Header from './Header';
 import ItemMessage from './ItemMessage';
 import HeaderChatScreen from './HeaderChatScreen';
@@ -33,7 +33,7 @@ export default function BoxChatScreen({navigation,route}) {
   const user = useSelector((state) => state.appChat.user);    
   const dispatch = useDispatch();
   const messages = useSelector((state) => state.appChat.messages);
-
+  const baseUrl= Platform.OS === 'web' ? 'http://localhost:8080/ws' : 'http://10.0.2.2:8080/ws';
   const listMessage = async () => {
     let user = null;
     try {
@@ -89,7 +89,7 @@ export default function BoxChatScreen({navigation,route}) {
   };
   
   const connect = async () => {
-    let sock = new SockJS("http://10.0.2.2:8080/ws");
+    let sock = new SockJS(baseUrl);
     // let sock = new SockJS("http://localhost:8080/ws");
     const stompClient = over(sock);
     stompClientRef.current = stompClient; // Save a reference for cleanup
