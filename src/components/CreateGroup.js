@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import getUser from "../api/service/loaduser";
 import { createGroup } from "../api/service/group";
 import { getRooms } from "../api/service/room";
+import { extractName, getColorForName } from "../api/service/ExtractUserName";
 export default function CreateGroupScreen({navigation}) {
     const friendFromRedux = useSelector((state) => state.notifyAddFriend.friendList);
     const [image,setImage]=useState(null);
@@ -97,7 +98,10 @@ export default function CreateGroupScreen({navigation}) {
                 renderItem={({ item }) => (
                     <View style={{flexDirection:'row',alignItems:'center',justifyContent:'flex-start',padding:10 }}>
                         <TouchableOpacity style={{width:30,height:30,borderRadius:50,borderWidth:1,backgroundColor:isSelected(item.email)?'gray':'white' }}  onPress={()=>{handleSelectMember(item.email)}}></TouchableOpacity>
-                        <Image source={{uri:item.avatar}} style={{width:50,height:50,borderRadius:50,marginLeft:20}}/>
+                        {item.avatar ? <Image style={{height:50,width:50,borderRadius:50}} source={{uri:item?.avatar}}/>:
+                                <View style={{height:50,width:50,borderRadius:50,marginLeft:20,backgroundColor:getColorForName(item.name),justifyContent:'center',alignItems:'center'}}>
+                                    <Text >{extractName(item.name)}</Text>
+                                </View>}
                         <Text style={{marginLeft:10}}>{item.name}</Text>
                     </View>
 

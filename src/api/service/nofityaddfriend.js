@@ -46,7 +46,7 @@ export const addFriend = async (senderId, receiverId,message) => {
 
 export const getFriendByUserId = async (userId) => {
     try {
-        const response = await requestApi("/friends/get-friends/"+userId, "POST", null, true, "application/json");
+        const response = await requestApi("/users/getFriend?email="+userId, "GET", null, true, "application/json");
         console.log(response.data);
         return response.data;
     } catch (error) {

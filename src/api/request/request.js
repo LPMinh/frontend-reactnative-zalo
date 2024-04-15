@@ -12,11 +12,11 @@ export default async function requestApi(endpoint, method, body, isInterceptors,
 
     let baseURL = '';
     if (Platform.OS === 'ios') {
-        baseURL = "http://127.0.0.1:8080/api/v1";
+        baseURL = "http://18.136.207.168/api/v1";
     } else if (Platform.OS === 'android') {
-        baseURL = "http://10.0.2.2:8080/api/v1";
+        baseURL = "http://18.136.207.168/api/v1";
     } else {
-        baseURL = "http://localhost:8080/api/v1";
+        baseURL = "http://18.136.207.168/api/v1";
     }
 
 

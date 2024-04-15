@@ -1,8 +1,9 @@
-import { faFilePdf, faFileWord } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faFilePdf, faFileWord } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Video, ResizeMode } from "expo-av";
 import React, { useRef, useState } from "react";
 import {
+  Dimensions,
   Image,
   Linking,
   Modal,
@@ -18,11 +19,14 @@ export default function Message({ item, receiver, user, sender, avt }) {
   const [showModal, setShowModal] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [status, setStatus] = useState({});
+  const [videoSize, setVideoSize] = useState({ width: 200, height: 400 });
   const video = useRef(null);
   const handleFullScreen = () => {
     setIsFullScreen(true);
   };
- 
+  const toggleFullScreen = () => {
+    setIsFullScreen(!isFullScreen);
+  };
   function EmotionDropBox({ display }) {
     return (
       <View
@@ -176,24 +180,22 @@ export default function Message({ item, receiver, user, sender, avt }) {
             </TouchableOpacity>
           );
         }
-        case "VIDEO":
+      case "VIDEO":
         return (
           <View>
-            <TouchableOpacity onPress={handleFullScreen}>
+            
+            <TouchableOpacity onPress={toggleFullScreen}>
               <Video
                 ref={video}
-                style={styles.video}
+                style={{ width: isFullScreen ? Dimensions.get('window').width : videoSize.width, height: isFullScreen ? Dimensions.get('window').height : videoSize.height,alignSelf:isFullScreen ? "center" : "flex-start"}}
                 source={{ uri: item.content.filePath }}
                 useNativeControls
                 resizeMode={isFullScreen ? "cover" : "contain"}
                 isLooping
-                onPlaybackStatusUpdate={(status) => setStatus(status)}
+                onPlaybackStatusUpdate={status => setStatus(() => status)}
               />
-              <Text
-                style={{ color: "black", fontSize: 14, textAlign: "center" }}>
-           
-              </Text>
             </TouchableOpacity>
+            <FontAwesomeIcon icon={faEdit} style={{color:'black',fontSize:20}}/>
           </View>
         );
           

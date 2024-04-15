@@ -33,7 +33,7 @@ export default function BoxChatScreen({navigation,route}) {
   const user = useSelector((state) => state.appChat.user);    
   const dispatch = useDispatch();
   const messages = useSelector((state) => state.appChat.messages);
-  const baseUrl= Platform.OS === 'web' ? 'http://localhost:8080/ws' : 'http://10.0.2.2:8080/ws';
+  const baseUrl= Platform.OS === 'web' ? 'http://18.136.207.168/ws' : 'http://18.136.207.168/ws';
   const listMessage = async () => {
     let user = null;
     try {

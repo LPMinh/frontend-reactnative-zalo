@@ -35,7 +35,7 @@ export default function BoxChatGroupScreen({navigation,route}) {
   const user = useSelector((state) => state.appChat.user);    
   const dispatch = useDispatch();
   const messages = useSelector((state) => state.appChat.messages);
-  const baseURLWebSocket = (Platform.OS === 'web') ? 'http://localhost:8080/ws' : 'http://10.0.2.2:8080/ws';
+  const baseURLWebSocket = (Platform.OS === 'web') ? 'http://18.136.207.168/ws' : 'http://18.136.207.168/ws';
   const listMessage = async () => {
     let user = null;
     try {
@@ -127,7 +127,7 @@ export default function BoxChatGroupScreen({navigation,route}) {
           data={messages}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <MessageGroup roomId={roomId} item={item} sender={senderId} receiver={receiverId}  avt={avatar} user={user}  />
+            <MessageGroup navigation={navigation} roomId={roomId} item={item} sender={senderId} receiver={receiverId}  avt={avatar} user={user}  />
           )}
           style={{ width: '100%' ,height:'90%',flexDirection:'column-reverse',backgroundColor:'#E2E9F1'}}
         />

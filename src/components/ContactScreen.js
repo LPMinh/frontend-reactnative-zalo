@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import getUser from '../api/service/loaduser';
 import ItemMessage from './ItemMessage';
+import { extractName, getColorForName } from '../api/service/ExtractUserName';
 
 export default function ContactScreen({navigation}) {
 
@@ -222,7 +223,11 @@ export default function ContactScreen({navigation}) {
               data={data}
               renderItem={({ item }) => (
                 <TouchableOpacity style={{ flexDirection: "row", width: "100%", alignSelf: "center" }} onPress={()=>navigation.navigate('chatbox',{receiverId:item.email,senderId:user.email,avatar:item?.avatar,name:item?.name})}>
-                  <Image source={item.avatar} style={{ width: 60, height: 60, margin: 10,borderRadius:50 }}></Image>
+                   {item.avatar ? <Image style={{height:50,width:50,borderRadius:50,margin:10}} source={{uri:item?.avatar}}/>:
+                                <View style={{height:50,width:50,borderRadius:50,margin:10,backgroundColor:getColorForName(item.name),justifyContent:'center',alignItems:'center'}}>
+                                    <Text  >{extractName(item.name)}</Text>
+                                </View>}
+                  
                   <Text style={{ top: 30, left: 15, fontSize: 16 }}>{item.name}</Text>
                   {/* button phone */}
                   <TouchableOpacity style={{ position: "absolute", top: 20, right: 70, margin: 10 }}>

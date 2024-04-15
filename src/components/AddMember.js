@@ -12,6 +12,7 @@ import { fr } from "react-native-paper-dates";
 import { addMember } from "../reduxtoolkit/slice/GroupChatReducer";
 import { getRooms } from "../api/service/room";
 import { setListRoom } from "../reduxtoolkit/slice/ChatReducer";
+import { extractName, getColorForName } from "../api/service/ExtractUserName";
 export default function AddMember({navigation,route}) {
     const friendFromRedux = useSelector((state) => state.notifyAddFriend.friendList);
     const friendingroup = route.params.members;
@@ -97,7 +98,10 @@ export default function AddMember({navigation,route}) {
                 renderItem={({ item }) => (
                     <View style={{flexDirection:'row',alignItems:'center',justifyContent:'flex-start',padding:10 }}>
                         <TouchableOpacity style={{width:30,height:30,borderRadius:50,borderWidth:1,backgroundColor:isSelected(item.email)?'gray':'white' }}  onPress={()=>{handleSelectMember(item.email)}}></TouchableOpacity>
-                        <Image source={{uri:item.avatar}} style={{width:50,height:50,borderRadius:50,marginLeft:20}}/>
+                        {item.avatar ? <Image style={{height:50,width:50,borderRadius:50}} source={{uri:item?.avatar}}/>:
+                                <View style={{height:50,width:50,borderRadius:50,marginLeft:10,backgroundColor:getColorForName(item.name),justifyContent:'center',alignItems:'center'}}>
+                                    <Text >{extractName(item.name)}</Text>
+                                </View>}
                         <Text style={{marginLeft:10}}>{item.name}</Text>
                     </View>
 

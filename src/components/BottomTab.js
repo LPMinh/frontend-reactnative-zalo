@@ -31,7 +31,7 @@ function BottomTab() {
      const ws = useRef(null);
      const dispatch = useDispatch();
      const listRoom=useSelector((state)=>state.appChat.listRoom);
-     const baseURLWebSocket = (Platform.OS === 'web') ? 'http://localhost:8080/ws' : 'http://10.0.2.2:8080/ws';
+     const baseURLWebSocket = (Platform.OS === 'web') ? 'http://18.136.207.168/ws' : 'http://18.136.207.168/ws';
      
     useEffect(() => {
      fethListFriend();
@@ -200,7 +200,7 @@ function BottomTab() {
        {},
        function  (frame) {
          stompClient.subscribe(
-           "/user/" + user.email + "/queue/message",
+           "/user/" + user.email + "/queue/messages",
            function  (message) {
              const mess = JSON.parse(message.body);
                 console.log("message", mess);

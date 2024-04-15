@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { AsyncStorage } from 'react-native';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import getUser from '../api/service/loaduser';
+import { extractName, getColorForName } from '../api/service/ExtractUserName';
 
 
 export default function ItemMessage({item,navigation}) {
@@ -54,7 +55,11 @@ export default function ItemMessage({item,navigation}) {
       {item.roomType==='GROUP_CHAT'?
     <TouchableOpacity style={styles.container} onPress={()=>navigation.navigate('chatboxgroup',{receiverId:getRecevier(item),senderId:getSender(item),avatar:item?.avatar,name:item?.name,roomId:item?.roomId})}>
         <View style={[styles.wrap,{ backgroundColor: item.type==='cloud'?'#F9F9F9':'#fff',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}]}>
-                <Image style={{height:50,width:50,borderRadius:50}} source={{uri:item?.avatar}}/>
+                {/* <Image style={{height:50,width:50,borderRadius:50}} source={{uri:item?.avatar}}/> */}
+                {item.avatar ? <Image style={{height:50,width:50,borderRadius:50}} source={{uri:item?.avatar}}/>:
+                <View style={{height:50,width:50,borderRadius:50,backgroundColor:getColorForName(item.name),justifyContent:'center',alignItems:'center'}}>
+                      <Text >{extractName(item.name)}</Text>
+                </View>}
                 
                 <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
                     <View style={{width:'80%',height:'100%',justifyContent:'flex-start',alignItems:'flex-start',marginLeft:10}}>
@@ -72,7 +77,10 @@ export default function ItemMessage({item,navigation}) {
     :
     <TouchableOpacity style={styles.container} onPress={()=>navigation.navigate('chatbox',{receiverId:getRecevier(item),senderId:getSender(item),avatar:item?.avatar,name:item?.name,roomId:item?.roomId})}>
     <View style={[styles.wrap,{ backgroundColor: item.type==='cloud'?'#F9F9F9':'#fff',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}]}>
-            <Image style={{height:50,width:50,borderRadius:50}} source={{uri:item?.avatar}}/>
+                {item.avatar ==null ? <Image style={{height:50,width:50,borderRadius:50}} source={{uri:item?.avatar}}/>:
+                <View style={{height:50,width:50,borderRadius:50,backgroundColor:getColorForName(item.name),justifyContent:'center',alignItems:'center'}}>
+                      <Text >{extractName(item.name)}</Text>
+                </View>}
             
             <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
                 <View style={{width:'80%',height:'100%',justifyContent:'flex-start',alignItems:'flex-start',marginLeft:10}}>

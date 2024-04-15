@@ -31,6 +31,7 @@ import { forwardMessage, revokeMessages } from "../api/service/message";
 import getUser from "../api/service/loaduser";
 import { useDispatch, useSelector } from "react-redux";
 import { TextInput } from "react-native-paper";
+import { extractName, getColorForName } from "../api/service/ExtractUserName";
 
 
 export default function MessageGroup({ item, receiver, user, sender, avt,roomId,navigation }) {
@@ -54,7 +55,6 @@ export default function MessageGroup({ item, receiver, user, sender, avt,roomId,
       }
   }
 
-
   const isSelected=(id)=>{
     return memberSelected.includes(id);
 }
@@ -64,6 +64,16 @@ export default function MessageGroup({ item, receiver, user, sender, avt,roomId,
   const handleForwardPress = () => {
     setShowForwardModal(true);
   };
+  const handlePosition = () =>{
+    if(item.messageType === "SYSTEM"){
+      return 'center';
+    }else if(isSender){
+      return 'flex-end';
+    }else{
+      return 'flex-start';
+    
+    }
+  }
   useEffect(() => {
     Dimensions.addEventListener("change", () => {
       if (isFullScreen) {
@@ -231,7 +241,7 @@ export default function MessageGroup({ item, receiver, user, sender, avt,roomId,
         );
 
       case "SYSTEM":
-        return (<Text style={{ color: "gray" }}>{item.content}</Text>)
+        return (<Text style={{ color: "gray" ,textAlign:'center'}}>{item.content}</Text>)
       default:
         return <Text>Không xác định</Text>;
     }
@@ -245,30 +255,47 @@ export default function MessageGroup({ item, receiver, user, sender, avt,roomId,
             alignItems: "center",
             justifyContent: isSender === false ? "flex-start" : "flex-end",
           }}>
-          {isSender === false ? (
+          {isSender === false && item.senderAvatar && (
             <Image
               source={{ uri: item?.senderAvatar }}
               style={{ width: 50, height: 50, borderRadius: 50 }}
             />
-          ) : null}
+            
+          ) }
+          {
+            isSender === false && item.senderAvatar == null && (
+              <View style={{height:50,width:50,borderRadius:50,backgroundColor:getColorForName(item.senderName),justifyContent:'center',alignItems:'center'}}>
+                    <Text >{extractName(item.senderName)}</Text>
+              </View>
+              )
+          }
           <View style={{ width: "auto", backgroundColor: "white" }}>
             <Text style={{ color: "red" }}>Tin nhắn đã bị thu hồi</Text>
           </View>
         </TouchableOpacity>
       ) : (
+
         <View
           style={{
             flexDirection: "row",
             alignItems: "flex-end",
-            justifyContent: isSender === false ? "flex-start" : "flex-end",
+            justifyContent: handlePosition(),
           }}
           onPress={() => setShowModal(true)}>
-          {isSender === false ? (
+          {isSender === false && item.senderAvatar && (
             <Image
-              source={{ uri: item.senderAvatar }}
+              source={{ uri: item?.senderAvatar }}
               style={{ width: 50, height: 50, borderRadius: 50 }}
             />
-          ) : null}
+            
+          ) }
+          {
+            isSender === false && item.senderAvatar == null && item.messageType != 'SYSTEM' && (
+              <View style={{height:50,width:50,borderRadius:50,backgroundColor:getColorForName(item.senderName),justifyContent:'center',alignItems:'center'}}>
+                    <Text >{extractName(item.senderName)}</Text>
+              </View>
+              )
+          }
           <TouchableOpacity
             style={{
               width: "auto",

@@ -11,6 +11,7 @@ import { addAdmin, createGroup, getGroupById, removeAdmin, removeMember } from "
 import { getRoom } from "../api/service/room";
 import findUserByEmail from "../api/service/user";
 import { Modal } from 'react-native';
+import { extractName, getColorForName } from "../api/service/ExtractUserName";
 
 export default function MemberManagerment({navigation,route}) {
     const [group,setGroup]=useState(route.params.group);
@@ -149,7 +150,10 @@ const getListNotAdmin = () => {
                 keyExtractor={(item)=>item.id}
                 renderItem={({item})=>(
                     <TouchableOpacity style={{width:'100%',flexDirection:'row',justifyContent:'flex-start',alignItems:'center',padding:10}} onPress={()=>{setSelected(item.email);setModalRemoveVisible(true)}}>
-                        <Image source={{uri:item.avatar}} style={{width:50,height:50,borderRadius:50}}/>
+                        {item.avatar ? <Image style={{height:50,width:50,borderRadius:50}} source={{uri:item?.avatar}}/>:
+                                <View style={{height:50,width:50,borderRadius:50,backgroundColor:getColorForName(item.name),justifyContent:'center',alignItems:'center'}}>
+                                    <Text >{extractName(item.name)}</Text>
+                                </View>}
                         {checkOwner(item.email)?<FontAwesomeIcon icon={faKey} style={{color:'gold',fontSize:20,marginLeft:5}}/>:<></>}
                         <Text style={{fontSize:16,fontWeight:'bold',marginLeft:10}}>{item.name}</Text>
                         {checkOwner(item.email)?<Text style={{fontSize:16,fontWeight:'bold',marginLeft:10,color:'gold'}}>(Chủ nhóm)</Text>:<></>}
@@ -189,7 +193,10 @@ const getListNotAdmin = () => {
                 renderItem={({ item }) => (
                     <View style={{flexDirection:'row',alignItems:'center',justifyContent:'flex-start',padding:10 }}>
                         <TouchableOpacity style={{width:30,height:30,borderRadius:50,borderWidth:1,backgroundColor:isSelected(item.email)?'gray':'white' }}  onPress={()=>{handleSelectMember(item.email)}}></TouchableOpacity>
-                        <Image source={{uri:item.avatar}} style={{width:50,height:50,borderRadius:50,marginLeft:20}}/>
+                        {item.avatar ? <Image style={{height:50,width:50,borderRadius:50}} source={{uri:item?.avatar}}/>:
+                                <View style={{height:50,width:50,borderRadius:50,marginLeft:20,backgroundColor:getColorForName(item.name),justifyContent:'center',alignItems:'center'}}>
+                                    <Text >{extractName(item.name)}</Text>
+                                </View>}
                         <Text style={{marginLeft:10}}>{item.name}</Text>
                     </View>
 
