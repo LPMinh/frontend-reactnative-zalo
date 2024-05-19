@@ -1,24 +1,16 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Platform } from "react-native";
+import { baseURLApi } from "../../constant/baseURL";
 
 export default async function requestApi(endpoint, method, body, isInterceptors, contenttype = 'application/json', navigation) {
     const headers = {
         "Accept": "application/json",
         "Content-Type": contenttype,
         "Access-Control-Allow-Origin": "*",
-        // "User-Agent": "mobile",
     };
 
-    let baseURL = '';
-    if (Platform.OS === 'ios') {
-        baseURL = "http://18.136.207.168/api/v1";
-    } else if (Platform.OS === 'android') {
-        baseURL = "http://18.136.207.168/api/v1";
-    } else {
-        baseURL = "http://18.136.207.168/api/v1";
-    }
-
+    let baseURL = baseURLApi;
 
     const instance = axios.create({ headers, baseURL });
 
@@ -26,15 +18,16 @@ export default async function requestApi(endpoint, method, body, isInterceptors,
         instance.interceptors.request.use(
             async (config) => {
                 if (!config.url.includes("/refreshToken")) {
-                   const token = await AsyncStorage.getItem('token');
-                   if (token) {
-                       const tokenRequest = JSON.parse(token);
-                       config.headers['Authorization'] = `Bearer ${tokenRequest.accessToken}`;
-                   }
+                    const token = await AsyncStorage.getItem('token');
+                    if (token) {
+                        const tokenRequest = JSON.parse(token);
+                        config.headers['Authorization'] = `Bearer ${tokenRequest.accessToken}`;
+                    }
                 }
                 return config;
             },
             (error) => {
+                console.log("Error in request interceptor", error);
                 return Promise.reject(error);
             }
         );
@@ -45,36 +38,25 @@ export default async function requestApi(endpoint, method, body, isInterceptors,
             },
             async (error) => {
                 const originalConfig = error.config;
-           
                 if (error.response && error.response.status === 403) {
                     try {
                         const token = await AsyncStorage.getItem('token');
-                        
                         if (token) {
-                            if(contenttype == "multipart/form-data"){
-                                const tokenRequest = JSON.parse(token);
-                                const formData = new FormData();
-                                formData.append("refreshToken", tokenRequest.refreshToken);
-                                const result = await instance.post(`/auth/refreshToken-formData`, { refreshToken: tokenRequest.refreshToken });
-                                const newToken = result.data;
-                                await AsyncStorage.setItem('token', JSON.stringify(newToken));
-                                originalConfig.headers['Authorization'] = `Bearer ${newToken.accessToken}`;
-                                return instance(originalConfig);
-                            }else{
-                                const tokenRequest = JSON.parse(token);
-                                const result = await instance.post(`/auth/refreshToken`, { refreshToken: tokenRequest.refreshToken });
-                                const newToken = result.data;
-                                await AsyncStorage.setItem('token', JSON.stringify(newToken));
-                                originalConfig.headers['Authorization'] = `Bearer ${newToken.accessToken}`;
-                                return instance(originalConfig);
-                            }
+                            const tokenRequest = JSON.parse(token);
+                            const result = await instance.post(`/auth/refreshToken`, { refreshToken: tokenRequest.refreshToken });
+                            const newToken = result.data;
+                            await AsyncStorage.setItem('token', JSON.stringify(newToken));
+                            originalConfig.headers['Authorization'] = `Bearer ${newToken.accessToken}`;
+                            return instance(originalConfig);
                         }
                     } catch (err) {
-                        console.log("err", err);
+                        console.log("Error in response interceptor", err);
                         if (err.response && err.response.status === 400) {
                             await AsyncStorage.removeItem('token');
                             await AsyncStorage.removeItem('user');
-                            navigation.navigate('login');
+                            if (navigation) {
+                                navigation.navigate('login');
+                            }
                         }
                         return Promise.reject(err);
                     }
@@ -84,10 +66,15 @@ export default async function requestApi(endpoint, method, body, isInterceptors,
         );
     }
 
-    return instance.request({
-        method: method,
-        url: `${endpoint}`,
-        data: body,
-        responseType: 'json',
-    });
+    try {
+        return await instance.request({
+            method: method,
+            url: `${endpoint}`,
+            data: body,
+            responseType: 'json',
+        });
+    } catch (error) {
+        console.log("Error in requestApi", error);
+        throw error;
+    }
 }

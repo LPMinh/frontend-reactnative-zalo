@@ -33,6 +33,9 @@ import ListMember from './src/components/ListMember';
 import AddMember from './src/components/AddMember';
 import MemberManagerment from './src/components/MemberManagement';
 import AdminManagement from './src/components/AdminManagement';
+import Forward from './src/components/ListFriendForward';
+import CallScreen from './src/components/CallScreen';
+import IncommingCall from './src/components/IncommingCall';
 
 
 
@@ -71,6 +74,9 @@ export default function App() {
           <Stack.Screen name="addMember" component={AddMember} />
           <Stack.Screen name="membermanagement" component={MemberManagerment} />
           <Stack.Screen name ="admin" component={AdminManagement} />
+          <Stack.Screen name="forward" component={Forward}/>
+          <Stack.Screen name="call" component={CallScreen}/>
+          <Stack.Screen name="incomingcall" component={IncommingCall}/>
         </Stack.Navigator>
         <StatusBar style="auto" />
       </NavigationContainer>

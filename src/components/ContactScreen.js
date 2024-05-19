@@ -16,8 +16,6 @@ export default function ContactScreen({navigation}) {
   const  rooms = useSelector((state) => state.appChat.listRoom);
   const [listRoom,setListRoom]=useState(rooms);
   const [user, setUser] = useState({});
-  console.log('rooms',listRoom);
-
   const getRoomGroup = async (rooms) => {
     return rooms.filter((room) => room.roomType === 'GROUP_CHAT');
   }

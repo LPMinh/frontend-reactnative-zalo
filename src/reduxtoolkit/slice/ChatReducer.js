@@ -9,6 +9,7 @@ const appChatSlice= createSlice(
             user: {},
             receiver: {},
             listRoom: [],
+            roomId: null
         },
         name: 'groupChat',
         reducers: {
@@ -35,12 +36,15 @@ const appChatSlice= createSlice(
             setListRoom: (state, action) => {
                 console.log(action.payload);
                 state.listRoom = action.payload;
+            },
+            setRoomId: (state, action) => {
+                state.roomId = action.payload;
             }
         }
     }
 )
 
-export const { setChat, addChat, setUser,setReceiver ,setListRoom,updateChat} = appChatSlice.actions;
+export const { setChat, addChat, setUser,setReceiver ,setListRoom,updateChat,setRoomId} = appChatSlice.actions;
 
 const ChatReducer = appChatSlice.reducer;
 export default ChatReducer;

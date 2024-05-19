@@ -12,15 +12,9 @@ import { extractName, getColorForName } from '../api/service/ExtractUserName';
 
 
 export default function ItemMessage({item,navigation}) {
-  const [user,setUser] = useState({});
+  const [receiver,setReceiver] = useState(null);
   useEffect(() => {
-    const fetchUser = async () => {
-      const userData = await getUser();
-      setUser(userData);
-    };
-
-    fetchUser();
-
+    getRecevier();
   }, []);
 
   const convertTime = (time)=>{
@@ -28,18 +22,19 @@ export default function ItemMessage({item,navigation}) {
     let date= arr[0]+'-'+arr[1]+'-'+arr[2]
     let hour= arr[3].toString()+arr[4].toString();
     let minute= arr[5];
-    let datetime = date+' '+hour+':'+minute;
+    let datetime = date
 
     return datetime
   }
-  const getRecevier = (item)=>{
-    if(item.sender===true){
-      return item.receiverId;
+
+  const getRecevier= async ()=>{
+    const user = await getUser();
+    if( user.email === item.senderId){
+      setReceiver(item.receiverId);
     }else{
-      return item.senderId;
-    
+      setReceiver(item.senderId);
     }
-  }
+}
   const getSender = (item)=>{
     if(item.sender===true){
       return item.senderId;
@@ -53,7 +48,7 @@ export default function ItemMessage({item,navigation}) {
   return (
     <View style={styles.container}>
       {item.roomType==='GROUP_CHAT'?
-    <TouchableOpacity style={styles.container} onPress={()=>navigation.navigate('chatboxgroup',{receiverId:getRecevier(item),senderId:getSender(item),avatar:item?.avatar,name:item?.name,roomId:item?.roomId})}>
+    <TouchableOpacity style={styles.container} onPress={()=>navigation.navigate('chatboxgroup',{receiverId: receiver,senderId:getSender(item),avatar:item?.avatar,name:item?.name,roomId:item?.roomId})}>
         <View style={[styles.wrap,{ backgroundColor: item.type==='cloud'?'#F9F9F9':'#fff',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}]}>
                 {/* <Image style={{height:50,width:50,borderRadius:50}} source={{uri:item?.avatar}}/> */}
                 {item.avatar ? <Image style={{height:50,width:50,borderRadius:50}} source={{uri:item?.avatar}}/>:
@@ -75,11 +70,11 @@ export default function ItemMessage({item,navigation}) {
         </View>
     </TouchableOpacity>
     :
-    <TouchableOpacity style={styles.container} onPress={()=>navigation.navigate('chatbox',{receiverId:getRecevier(item),senderId:getSender(item),avatar:item?.avatar,name:item?.name,roomId:item?.roomId})}>
+    <TouchableOpacity style={styles.container} onPress={()=>navigation.navigate('chatbox',{receiverId:receiver,senderId:getSender(item),avatar:item?.avatar,name:item?.name,roomId:item?.roomId})}>
     <View style={[styles.wrap,{ backgroundColor: item.type==='cloud'?'#F9F9F9':'#fff',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}]}>
                 {item.avatar ==null ? <Image style={{height:50,width:50,borderRadius:50}} source={{uri:item?.avatar}}/>:
                 <View style={{height:50,width:50,borderRadius:50,backgroundColor:getColorForName(item.name),justifyContent:'center',alignItems:'center'}}>
-                      <Text >{extractName(item.name)}</Text>
+                      <Text style={{fontWeight:0}} >{extractName(item.name)}</Text>
                 </View>}
             
             <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
@@ -89,7 +84,8 @@ export default function ItemMessage({item,navigation}) {
                 </View>
                 <View style={{width:'20%',height:'100%',justifyContent:'center',alignItems:'flex-end'}}>
                     <Text>{convertTime(item.time)}</Text>
-                    <Text style={{backgroundColor:'red',borderRadius:40,paddingHorizontal:5,color:'#fff'}}>{item.numberOfUnreadMessage}</Text>
+                    {item.numberOfUnreadMessage>0?<Text style={{backgroundColor:'red',borderRadius:40,paddingHorizontal:5,color:'#fff'}}>{item.numberOfUnreadMessage}</Text>:<></>}
+                    
                 </View>
             </View>
            

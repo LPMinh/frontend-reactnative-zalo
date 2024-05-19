@@ -3,18 +3,17 @@ import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'reac
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
 import login from '../api/service/login';
 import findUserByEmail from '../api/service/user';
-
-axios.defaults.baseURL = 'http://localhost:8080/api/v1';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../reduxtoolkit/slice/ChatReducer';
 
 const LoginScreen = ({ navigation, route }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const account = route?.params?.account;
-
+  const dispatch = useDispatch();
   if (account) {
     setEmail(account.email);
     setPassword(account.password);
@@ -22,27 +21,23 @@ const LoginScreen = ({ navigation, route }) => {
 
   const handleLogin = async () => {
     const info = {
-      email: email,
-      password: password,
-      isMobile: true,
+        email: email,
+        password: password,
+        // isMobile: true,
     };
-
-    const response = await login(info);
-
-    if (response) {
-      const user = await findUserByEmail(email)
-        .then((response) => response)
-        .catch((error) => {
-          console.log(error);
-          return null;
-        });
-      console.log(user);
-      AsyncStorage.setItem('user', JSON.stringify(user));
-      navigation.navigate('tab');
-    } else {
+    try {
+        const response = await login(info);
+        if (response) {
+            const user = await findUserByEmail(email);
+            dispatch(setUser(user));
+            await AsyncStorage.setItem('user', JSON.stringify(user));
+            navigation.navigate('tab');
+        }
+    } catch (error) {
       setError('Sai tài khoản hoặc mật khẩu');
+        console.error('Error during login process:', error);
     }
-  };
+};
 
   return (
     <View style={styles.container}>

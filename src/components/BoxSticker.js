@@ -15,7 +15,7 @@ export default function BoxSticker() {
  }
  const dispatch = useDispatch();
  const handleEmojiSelected=(emoji)=>{
-  dispatch(setEmoji(emoji));
+  
  }
  const dataTickers=[
    {

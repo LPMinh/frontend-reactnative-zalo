@@ -69,7 +69,6 @@ export default  function  DetailGroup  ({navigation,route}) {
         return false;
     }
     const handleNavigate= async()=>{
-        console.warn(isOwner())
         if(await isOwner()){
             return navigation.navigate("membermanagement",{'group':group});
         }else if (await isAdministrator()){
@@ -79,7 +78,6 @@ export default  function  DetailGroup  ({navigation,route}) {
     
     const handleLeavegroup=async()=>{
         const groupId=roomInfo.roomId;
-        console.warn('groupId',groupId);
         const user = await getUser();
         const memberId=user.email;
         try{

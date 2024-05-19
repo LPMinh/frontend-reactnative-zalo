@@ -44,7 +44,6 @@ export default function FriendRequest({ navigation, route}) {
          const user = await AsyncStorage.getItem('user');
          const userParse = JSON.parse(user);
          const listfriend = await getFriendByUserId(userParse.email);
-         console.log('listfriend', listfriend);
          dispatch(setFriends(listfriend));
     } catch (error) {
          console.log('Error fetching data: ', error);

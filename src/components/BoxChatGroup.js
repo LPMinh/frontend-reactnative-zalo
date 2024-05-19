@@ -19,6 +19,7 @@ import { over } from 'stompjs';
 import getUser from '../api/service/loaduser';
 import { getRooms } from '../api/service/room';
 import MessageGroup from './MessageGroup';
+import { baseURLWebSocket } from '../constant/baseURL';
 
 export default function BoxChatGroupScreen({navigation,route}) {
   const receiverId = route.params.receiverId;
@@ -35,7 +36,6 @@ export default function BoxChatGroupScreen({navigation,route}) {
   const user = useSelector((state) => state.appChat.user);    
   const dispatch = useDispatch();
   const messages = useSelector((state) => state.appChat.messages);
-  const baseURLWebSocket = (Platform.OS === 'web') ? 'http://18.136.207.168/ws' : 'http://18.136.207.168/ws';
   const listMessage = async () => {
     let user = null;
     try {

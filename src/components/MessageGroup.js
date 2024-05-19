@@ -23,6 +23,7 @@ import {
   Modal,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -30,7 +31,6 @@ import { forwardMessage, revokeMessages } from "../api/service/message";
 
 import getUser from "../api/service/loaduser";
 import { useDispatch, useSelector } from "react-redux";
-import { TextInput } from "react-native-paper";
 import { extractName, getColorForName } from "../api/service/ExtractUserName";
 
 

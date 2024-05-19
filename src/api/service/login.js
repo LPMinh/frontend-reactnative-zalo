@@ -1,24 +1,20 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import requestApi from "../request/request";
+import findUserByEmail from "./user";
 
 const login = async (info) => {
-    const respone = await requestApi('/auth/login', 'POST', info, false, 'application/json')
-        .then((response) => {
-            console.log(response.data);
-            return response.data;
-        }).catch((error) => {
-            console.log(error);
-            return null;
-        });
-    if (respone) {
-        AsyncStorage.setItem('token', JSON.stringify(respone));
-
-        AsyncStorage.getItem('token').then((token) => {
-            console.log("sau khi lay token", token);
-        });
+    try {
+        const response = await requestApi('/auth/login', 'POST', info, false, 'application/json');
+        const responseData = response.data;
+        if (responseData) {
+            await AsyncStorage.setItem('token', JSON.stringify(responseData));
+            const token = await AsyncStorage.getItem('token');
+        }
+        return responseData;
+    } catch (error) {
+        console.error("error in login", error);
+       return Promise.reject(error);
     }
-    return respone;
-
-}
+};
 
 export default login;

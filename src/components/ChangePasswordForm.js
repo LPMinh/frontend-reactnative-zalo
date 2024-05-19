@@ -28,7 +28,6 @@ const ChangePasswordScreen = ({ navigation }) => {
   
     // Add your API call or logic to change password here
     const result = await changePassword (email,currentPassword,newPassword,confirmPassword);
-    console.log(result);
     if(result){
       alert('Đổi mật khẩu thành công');
       navigation.navigate('welcome');

@@ -47,19 +47,18 @@ export default function CreateGroupScreen({navigation}) {
     const fetchRooms = async () => {
         const user = await getUser();
         const rooms = await getRooms(user.email);
-        console.log(rooms);
         dispatch(setListRoom(rooms.roomResponses));
       }
     const handleCreateGroup= async()=>{
         const user = await getUser();
+      
         try{
-            let localUri = image;
-            let filename = localUri.split('/').pop();
-            // Infer the type of the image
-            let match = /\.(\w+)$/.exec(filename);
-            let type = match ? `image/${match[1]}` : `image`;
-            const multipart = { uri: localUri, name: filename, type };
-            const result = await createGroup(name,user.email,user.name,multipart,memberSelected)
+                let localUri = image;
+                let filename = localUri.split('/').pop();
+                let match = /\.(\w+)$/.exec(filename);
+                let type = match ? `image/${match[1]}` : `image`;
+                const  multipart = { uri: localUri, name: filename, type };
+                const result = await createGroup(name,user.email,user.name,multipart,memberSelected)
                 Alert.alert('Thông báo', 'Tạo nhóm thành công');
                 await fetchRooms();
                return navigation.goBack();

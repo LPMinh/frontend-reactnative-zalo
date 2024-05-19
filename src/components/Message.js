@@ -27,6 +27,19 @@ export default function Message({ item, receiver, user, sender, avt }) {
   const toggleFullScreen = () => {
     setIsFullScreen(!isFullScreen);
   };
+  const convertStatusCall = (status) => {
+    switch (status) {
+      case "START":
+        return "Bắt đầu gọi";
+      case "MISSED":
+        return "Cuộc gọi nhỡ";
+      case "REJECT": 
+        return "Cuộc gọi bị từ chối";
+      case "CALLING":
+        return "Cuộc gọi đang diễn ra";
+    }
+
+  };      
   function EmotionDropBox({ display }) {
     return (
       <View
@@ -198,9 +211,12 @@ export default function Message({ item, receiver, user, sender, avt }) {
             <FontAwesomeIcon icon={faEdit} style={{color:'black',fontSize:20}}/>
           </View>
         );
-          
-
-
+      case "SYSTEM":
+          return (<Text style={{ color: "gray" ,textAlign:'center'}}>{item.content}</Text>);
+      case "AUDIO_CALL":
+          return (<Text style={{ color: "gray" ,textAlign:'center'}}>
+            {convertStatusCall(item.content.callStatus)}
+          </Text>);    
       case "sticker":
         return <Text>Sticker</Text>;
       default:

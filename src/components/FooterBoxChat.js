@@ -50,7 +50,6 @@ export default function FooterBoxChat({ onShowBoxSticker, receciverId,senderId }
     quality: 1,
   });
   if (!result.canceled) {
-    console.warn(result.assets[0]);
     if(result.assets[0].type==='video'){
       const multipart = { uri: result.assets[0].uri, name: result.assets[0].fileName, type: result.assets[0].mimeType };
       await handleSendVideo(multipart);

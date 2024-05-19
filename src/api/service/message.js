@@ -89,4 +89,38 @@ export const forwardMessage = async (senderId,receiversId,messageId) => {
     }
 }
 
+export const call = async (senderId, receiverId, messageType) => {
+    try {
+        const response = await requestApi("/messages/callRequest", "POST", {senderId, receiverId, messageType}, true, "application/json");
+        return response.data;
+    } catch (error) {
+        console.warn(error);
+        return Promise.reject(error);
+    }
+}
+
+export const acceptCall = async (messageId) => {
+    try {
+        const response = await requestApi("/messages/acceptCallRequest/"+messageId, "GET", null, true, "application/json");
+        return response.data;
+    } catch (error) {
+        console.warn(error);
+        return Promise.reject(error);
+    }
+}
+
+export const rejectCall = async (messageId) => {
+    try {
+        const response = await requestApi("/messages/rejectCallRequest/"+messageId, "GET", null, true, "application/json");
+        return response.data;
+    } catch (error) {
+        console.warn(error);
+        return Promise.reject(error);
+    }
+}
+
+
+
+
+
 
